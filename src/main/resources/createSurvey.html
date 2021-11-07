@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a new product | Webshop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+    <h1>Add a new question</h1>
+    <form action="/api/newQuestion" method="POST">
+        <p><label>Product category: <select name="category" id="category"></select></label></p>
+        <p><label>Question: <input type="text" name="productName" /></label></p>
+        <p><button>Submit</button></p>
+    </form>
+    <p><a href="index.html"><button>Back</button></a></p>
+</main>
+</body>
+<script>
+    fetch("/api/categoryOptions").then(function(res) {
+        return res.text()
+    }).then(function(text) {
+        document.querySelector("#category").innerHTML = text;
+    });
+</script>
+</html>

@@ -16,7 +16,7 @@ public class HttpServer {
     private Path rootDirectory;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
     private List<String> categories = new ArrayList<>();
-    private List<Product> productList = new ArrayList<>();
+    private List<Question> productList = new ArrayList<>();
 
 
     public HttpServer(int serverPort) throws IOException {
@@ -26,7 +26,7 @@ public class HttpServer {
     }
 
 
-    //MÅ HA BEDRE HANDLINGER HER
+    //MÅ HA BEDRE FEILHÅNDTERING HER
     private void handleClients() {
         try {
             while (true) {
@@ -56,10 +56,10 @@ public class HttpServer {
         }
 
 
-        if (fileTarget.equals("/api/newProduct")) {
+    if (fileTarget.equals("/api/newQuestion")) {
             Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
-            Product product = new Product();
-            product.setProduct(queryMap.get("productName"));
+            Question product = new Question();
+            product.setQuestion(queryMap.get("productName"));
             productList.add(product);
             writeOkResponse(clientSocket, "it is done", "text/html");
         } else if (fileTarget.equals("/api/categoryOptions")){
@@ -72,7 +72,7 @@ public class HttpServer {
             writeOkResponse(clientSocket, responseText, "text/html");
         } else if (fileTarget.equals("/api/products")){
             for (int i = 0; i < productList.size(); i++) {
-                responseText += "<p>" + productList.get(i).getProductName() + "</p>";
+                responseText += "<p>" + productList.get(i).getQuestionName() + "</p>";
             }
 
 
@@ -115,6 +115,7 @@ public class HttpServer {
 
     private void writeOkResponse(Socket clientSocket, String responseText, String contentType) throws IOException {
         String response = "HTTP/1.1 200 OK\r\n" +
+                //getBytes i stedet for length
                 "Content-Length: " + responseText.length() + "\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
                 "Connection: close\r\n" +
@@ -144,7 +145,7 @@ public class HttpServer {
         this.categories = categories;
     }
 
-    public List<Product> getProducts() {
+    public List<Question> getProducts() {
         return productList;
     }
 }

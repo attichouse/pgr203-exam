@@ -1,4 +1,4 @@
 package no.kristiania.survey;
 
-public class Survey {
+public class QuestionDaoTest {
 }

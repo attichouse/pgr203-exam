@@ -65,7 +65,7 @@ public class HttpServerTest {
         );
     }
 
-    @Test
+   /* @Test
     void shouldCreateNewProduct () throws IOException{
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
@@ -76,5 +76,5 @@ public class HttpServerTest {
         assertEquals(200, postClient.getStatusCode());
         Product product = server.getProducts().get(0);
         assertEquals("Banan", product.getProductName());
-    }
+    }*/
 }
