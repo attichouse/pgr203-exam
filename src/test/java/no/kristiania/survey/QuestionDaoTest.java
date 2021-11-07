@@ -1,6 +1,8 @@
 package no.kristiania.survey;
 
 import org.junit.jupiter.api.Test;
+
+import java.sql.SQLException;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +11,7 @@ public class QuestionDaoTest {
     private QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
     @Test
-    void shouldListQuestions() {
+    void shouldListQuestions() throws SQLException {
         String question1 = "question-" + UUID.randomUUID();
         String question2 = "question-" + UUID.randomUUID();
 
