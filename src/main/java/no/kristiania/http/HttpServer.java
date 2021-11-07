@@ -1,19 +1,18 @@
 package no.kristiania.http;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
 
     private final ServerSocket serverSocket;
-    private Path rootDirectory;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
     private List<String> categories = new ArrayList<>();
     private List<Question> productList = new ArrayList<>();
@@ -75,11 +74,13 @@ public class HttpServer {
                 responseText += "<p>" + productList.get(i).getQuestionName() + "</p>";
             }
 
-
             writeOkResponse(clientSocket, responseText, "text/html");
         } else {
-            if(rootDirectory != null && Files.exists(rootDirectory.resolve(fileTarget.substring(1)))){
-                responseText = Files.readString(rootDirectory.resolve(fileTarget.substring(1)));
+            InputStream fileResource = getClass().getResourceAsStream(fileTarget);
+            if(fileResource != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                fileResource.transferTo(buffer);
+                responseText = buffer.toString();
 
                 String contentType = "text/plain";
                 if (requestTarget.endsWith(".html")){
@@ -128,17 +129,11 @@ public class HttpServer {
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(1962);
         httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));
-        httpServer.setRoot(Paths.get("src/main/resources/."));
     }
 
 
     public int getPort() {
         return serverSocket.getLocalPort();
-    }
-
-
-    public void setRoot(Path rootDirectory) {
-        this.rootDirectory = rootDirectory;
     }
 
     public void setCategories(List<String> categories) {
