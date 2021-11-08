@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
@@ -15,7 +14,7 @@ public class HttpServer {
     private final ServerSocket serverSocket;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
     private List<String> categories = new ArrayList<>();
-    private List<Question> productList = new ArrayList<>();
+    private List<Survey> surveyList = new ArrayList<>();
 
 
     public HttpServer(int serverPort) throws IOException {
@@ -57,9 +56,9 @@ public class HttpServer {
 
     if (fileTarget.equals("/api/newQuestion")) {
             Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
-            Question product = new Question();
-            product.setQuestion(queryMap.get("productName"));
-            productList.add(product);
+            Survey product = new Survey();
+            product.setSurvey(queryMap.get("productName"));
+            surveyList.add(product);
             writeOkResponse(clientSocket, "it is done", "text/html");
         } else if (fileTarget.equals("/api/categoryOptions")){
 
@@ -70,8 +69,8 @@ public class HttpServer {
 
             writeOkResponse(clientSocket, responseText, "text/html");
         } else if (fileTarget.equals("/api/products")){
-            for (int i = 0; i < productList.size(); i++) {
-                responseText += "<p>" + productList.get(i).getQuestionName() + "</p>";
+            for (int i = 0; i < surveyList.size(); i++) {
+                responseText += "<p>" + surveyList.get(i).geSurveyName() + "</p>";
             }
 
             writeOkResponse(clientSocket, responseText, "text/html");
@@ -140,7 +139,7 @@ public class HttpServer {
         this.categories = categories;
     }
 
-    public List<Question> getProducts() {
-        return productList;
+    public List<Survey> getProducts() {
+        return surveyList;
     }
 }

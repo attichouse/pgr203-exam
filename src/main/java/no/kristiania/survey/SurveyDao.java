@@ -12,7 +12,6 @@ public class SurveyDao {
 
     private final DataSource dataSource;
 
-
     public SurveyDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -25,7 +24,6 @@ public class SurveyDao {
                 statement.executeUpdate();
             }
         }
-
     }
 
 
