@@ -1,9 +1,12 @@
 package no.kristiania.http;
 
+import no.kristiania.survey.SurveyDao;
+import no.kristiania.survey.TestData;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -49,13 +52,16 @@ public class HttpServerTest {
     }
 
     @Test
-    void shouldReturnCategoriesFromServer() throws IOException {
+    void shouldReturnSurveyNameFromServer() throws IOException, SQLException {
         //need to change the options to what we want them to be
-        server.setCategories(List.of("Test","Test2"));
+        SurveyDao surveyDao = new SurveyDao(TestData.testDataSource());
+        surveyDao.save("ost");
+        surveyDao.save("Test2");
+        server.addController("/api/categoryOptions", new SurveyOptionsController(surveyDao));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/categoryOptions");
         assertEquals(
-                "<option value=1>Test</option><option value=2>Test2</option>",
+                "<option value=1>ost</option><option value=2>Test2</option>",
                 client.getMessageBody()
         );
     }

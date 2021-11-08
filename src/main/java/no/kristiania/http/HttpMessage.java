@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,14 @@ public class HttpMessage {
             messageBody = HttpMessage.readBytes(socket, getContentLength());
         }
     }
+
+    public HttpMessage (String startLine, String messageBody) {
+        this.startLine = startLine;
+        this.messageBody = messageBody;
+
+    }
+
+
 
 
     private static String readLine(Socket socket) throws IOException {
@@ -64,4 +73,13 @@ public class HttpMessage {
     }
 
 
+    public void write(Socket socket) throws IOException {
+        String response = startLine + "\r\n" +
+                //getBytes i stedet for length
+                "Content-Length: " + messageBody.length() + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n" +
+                messageBody;
+        socket.getOutputStream().write(response.getBytes());
+    }
 }

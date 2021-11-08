@@ -1,5 +1,7 @@
 package no.kristiania.http;
 
+import no.kristiania.survey.SurveyDao;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,14 +9,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.*;
 
 public class HttpServer {
 
     private final ServerSocket serverSocket;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
-    private List<String> categories = new ArrayList<>();
+    private List<String> survey = new ArrayList<>();
     private List<Survey> surveyList = new ArrayList<>();
+    private Map<String, HttpController> controllers = new HashMap<>();
+    private SurveyDao surveyDao;
 
 
     public HttpServer(int serverPort) throws IOException {
@@ -30,13 +35,13 @@ public class HttpServer {
             while (true) {
                 handleClient();
             }
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    private void handleClient() throws IOException {
+    private void handleClient() throws IOException, SQLException {
         Socket clientSocket = serverSocket.accept();
 
         HttpMessage httpMessage = new HttpMessage(clientSocket);
@@ -54,17 +59,24 @@ public class HttpServer {
         }
 
 
+        if(controllers.containsKey(fileTarget)){
+            HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
+                    response.write(clientSocket);
+                    return;
+        }
+
     if (fileTarget.equals("/api/newQuestion")) {
             Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
             Survey product = new Survey();
-            product.setSurvey(queryMap.get("productName"));
+            product.setSurveyName(queryMap.get("productName"));
             surveyList.add(product);
             writeOkResponse(clientSocket, "it is done", "text/html");
         } else if (fileTarget.equals("/api/categoryOptions")){
 
+
             int value = 1;
-            for (String category : categories) {
-                responseText += "<option value=" + (value++) + ">" + category + "</option>";
+        for (String survey : surveyDao.listAll()) {
+                responseText += "<option value=" + (value++) + ">" + survey + "</option>";
             }
 
             writeOkResponse(clientSocket, responseText, "text/html");
@@ -136,10 +148,15 @@ public class HttpServer {
     }
 
     public void setCategories(List<String> categories) {
-        this.categories = categories;
+        this.survey = categories;
     }
 
     public List<Survey> getProducts() {
         return surveyList;
     }
+
+    public void addController(String path, HttpController controller) {
+        this.controllers.put(path, controller);
+    }
+
 }

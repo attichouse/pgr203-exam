@@ -8,7 +8,7 @@ public class Survey {
         return survey;
     }
 
-    public void setSurvey(String survey) {
+    public void setSurveyName(String survey) {
         this.survey = survey;
     }
 }
