@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class QuestionDaoTest {
+public class SurveyDaoTest {
 
-    private QuestionDao dao = new QuestionDao(TestData.testDataSource());
+    private SurveyDao dao = new SurveyDao(TestData.testDataSource());
 
     @Test
-    void shouldListQuestions() throws SQLException {
+    void shouldListSurveys() throws SQLException {
         String question1 = "question-" + UUID.randomUUID();
         String question2 = "question-" + UUID.randomUUID();
 

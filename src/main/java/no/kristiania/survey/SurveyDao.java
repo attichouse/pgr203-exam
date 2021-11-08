@@ -8,20 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionDao {
+public class SurveyDao {
 
     private final DataSource dataSource;
 
 
-    public QuestionDao(DataSource dataSource) {
+    public SurveyDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
 
-    public void save(String questionName) throws SQLException {
+    public void save(String surveyName) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("insert into questions (question_text) values (?)")) {
-                statement.setString(1, questionName);
+            try (PreparedStatement statement = connection.prepareStatement("insert into surveys (survey_name) values (?)")) {
+                statement.setString(1, surveyName);
                 statement.executeUpdate();
             }
         }
@@ -31,11 +31,11 @@ public class QuestionDao {
 
     public List<String> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from questions")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from surveys")) {
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<String> result = new ArrayList<>();
                     while (rs.next()) {
-                        result.add(rs.getString("question_text"));
+                        result.add(rs.getString("survey_name"));
                     }
                     return result;
                 }
