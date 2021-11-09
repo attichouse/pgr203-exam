@@ -51,7 +51,7 @@ public class HttpServerTest {
         assertEquals("text/html", client.getHeader("Content-Type"));
     }
 
-    @Test
+    /*@Test
     void shouldReturnSurveyNameFromServer() throws IOException, SQLException {
         //need to change the options to what we want them to be
         SurveyDao surveyDao = new SurveyDao(TestData.testDataSource());
@@ -64,7 +64,7 @@ public class HttpServerTest {
                 "<option value=1>ost</option><option value=2>Test2</option>",
                 client.getMessageBody()
         );
-    }
+    }*/
 
    /* @Test
     void shouldCreateNewProduct () throws IOException{

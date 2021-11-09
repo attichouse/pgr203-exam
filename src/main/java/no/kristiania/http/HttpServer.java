@@ -28,9 +28,9 @@ public class HttpServer {
     }
 
     public void createDataSource() {
-        dataSource.setURL("jdbc:postgresql://localhost:5433/postgres");
+        dataSource.setURL("jdbc:postgresql://localhost:5432/postgres");
         dataSource.setUser("postgres");
-        dataSource.setPassword("v;6G.}h:s8uVyf*+");
+        dataSource.setPassword("6RLBqvkKpFXptjwnKm");
         surveyDao = new SurveyDao(dataSource);
     }
 

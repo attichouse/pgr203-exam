@@ -1,9 +1,7 @@
 package no.kristiania.survey;
 
 import org.junit.jupiter.api.Test;
-
 import java.sql.SQLException;
-import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SurveyDaoTest {
@@ -11,14 +9,31 @@ public class SurveyDaoTest {
     private SurveyDao dao = new SurveyDao(TestData.testDataSource());
 
     @Test
-    void shouldListSurveys() throws SQLException {
-        String question1 = "question-" + UUID.randomUUID();
-        String question2 = "question-" + UUID.randomUUID();
+    void shouldRetrieveSavedSurveys() throws SQLException {
+        Survey survey = exampleSurvey();
+        dao.save(survey);
+        assertThat(dao.retrieve(survey.getSurveyId()))
+                .usingRecursiveComparison()
+                .isEqualTo(survey);
+    }
 
-        dao.save(question1);
-        dao.save(question2);
+
+    @Test
+    void shouldListAllSurveys() throws SQLException {
+        Survey survey = exampleSurvey();
+        dao.save(survey);
+        Survey anotherSurvey = exampleSurvey();
+        dao.save(anotherSurvey);
 
         assertThat(dao.listAll())
-                .contains(question1, question2);
+                .extracting(Survey::getSurveyId)
+                .contains(survey.getSurveyId(), anotherSurvey.getSurveyId());
+    }
+
+
+    private Survey exampleSurvey() {
+        Survey survey = new Survey();
+        survey.setSurveyName(TestData.pickOne("Er du smartere enn en 5. klassing?", "How much do you know about cars?"));
+        return survey;
     }
 }
