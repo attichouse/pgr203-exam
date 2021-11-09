@@ -1,6 +1,7 @@
 package no.kristiania.http;
 
 import no.kristiania.survey.SurveyDao;
+import org.postgresql.ds.PGSimpleDataSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,18 +15,26 @@ import java.util.*;
 
 public class HttpServer {
 
-    private final ServerSocket serverSocket;
+    private ServerSocket serverSocket;
+    private SurveyDao surveyDao;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
     private List<String> survey = new ArrayList<>();
     private List<Survey> surveyList = new ArrayList<>();
     private Map<String, HttpController> controllers = new HashMap<>();
-    private SurveyDao surveyDao;
+
+    PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
 
     public HttpServer(int serverPort) throws IOException {
         serverSocket = new ServerSocket(serverPort);
-
         new Thread(this::handleClients).start();
+    }
+
+    public void createDataSource() {
+        dataSource.setURL("jdbc:postgresql://localhost:5433/postgres");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("v;6G.}h:s8uVyf*+");
+        surveyDao = new SurveyDao(dataSource);
     }
 
 
@@ -139,6 +148,7 @@ public class HttpServer {
 
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(1962);
+        httpServer.createDataSource();
         httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));
     }
 
