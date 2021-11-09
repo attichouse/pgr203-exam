@@ -12,7 +12,7 @@ public class HttpPostClient {
 
 
     public HttpPostClient(String host, int port, String requestTarget, String contentBody) throws IOException {
-        Socket socket = new Socket();
+        Socket socket = new Socket(host, port);
 
         String request = "POST " + requestTarget + " HTTP/1.1\r\n" +
                 "HOST: " + host + "\r\n" +
