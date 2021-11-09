@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class HttpMessage {
         }
     }
 
+
     public HttpMessage (String startLine, String messageBody) {
         this.startLine = startLine;
         this.messageBody = messageBody;
@@ -28,17 +30,33 @@ public class HttpMessage {
     }
 
 
-
-
-    private static String readLine(Socket socket) throws IOException {
-        StringBuilder result = new StringBuilder();
-        int c;
-        while ((c = socket.getInputStream().read()) != '\r') {
-            result.append((char)c);
+    private Map<String, String> parseRequestParameters(String query) {
+        Map<String, String> queryMap = new HashMap<>();
+        for (String queryParameter : query.split("&")) {
+            int equalPos = queryParameter.indexOf('=');
+            String parameterName = queryParameter.substring(0, equalPos);
+            String parameterValue = queryParameter.substring(equalPos + 1);
+            queryMap.put(parameterName, URLDecoder.decode(parameterValue, StandardCharsets.UTF_8));
         }
+        return queryMap;
+    }
 
-        int expectedNewLine = socket.getInputStream().read();
-        assert expectedNewLine == '\n';
+
+    private int getContentLength() {
+        return Integer.parseInt(getHeader("Content-Length"));
+    }
+
+
+    private String getHeader(String headerName) {
+        return headerFields.get(headerName);
+    }
+
+
+    static String readBytes(Socket socket, int contentLength) throws IOException {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < contentLength; i++) {
+            result.append((char)socket.getInputStream().read());
+        }
         return result.toString();
     }
 
@@ -54,32 +72,26 @@ public class HttpMessage {
     }
 
 
-    private static String readBytes(Socket socket, int contentLength) throws IOException {
+    static String readLine(Socket socket) throws IOException {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < contentLength; i++) {
-            result.append((char)socket.getInputStream().read());
+        int c;
+        while ((c = socket.getInputStream().read()) != '\r') {
+            result.append((char)c);
         }
+
+        int expectedNewLine = socket.getInputStream().read();
+        assert expectedNewLine == '\n';
         return result.toString();
     }
 
 
-    private int getContentLength() {
-        return Integer.parseInt(getHeader("Content-Length"));
-    }
-
-
-    private String getHeader(String headerName) {
-        return headerFields.get(headerName);
-    }
-
-
-    public void write(Socket socket) throws IOException {
+    public void write(Socket clientSocket) throws IOException {
         String response = startLine + "\r\n" +
                 //getBytes i stedet for length
                 "Content-Length: " + messageBody.length() + "\r\n" +
                 "Connection: close\r\n" +
                 "\r\n" +
                 messageBody;
-        socket.getOutputStream().write(response.getBytes());
+        clientSocket.getOutputStream().write(response.getBytes());
     }
 }

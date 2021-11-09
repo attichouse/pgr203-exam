@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -19,7 +17,6 @@ public class HttpServer {
     private SurveyDao surveyDao;
     //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
     private List<String> survey = new ArrayList<>();
-    private List<Survey> surveyList = new ArrayList<>();
     private Map<String, HttpController> controllers = new HashMap<>();
 
     PGSimpleDataSource dataSource = new PGSimpleDataSource();
@@ -56,81 +53,47 @@ public class HttpServer {
         HttpMessage httpMessage = new HttpMessage(clientSocket);
         String[] requestLine = httpMessage.startLine.split(" ");
         String requestTarget = requestLine[1];
-        String responseText = "";
-
 
         int questionPos = requestTarget.indexOf('?');
         String fileTarget;
+        String query = null;
         if (questionPos != -1){
             fileTarget = requestTarget.substring(0, questionPos);
+            query = requestTarget.substring(questionPos + 1);
         } else {
             fileTarget = requestTarget;
         }
 
-
         if(controllers.containsKey(fileTarget)){
             HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
-                    response.write(clientSocket);
-                    return;
+            response.write(clientSocket);
+            return;
         }
 
-    if (fileTarget.equals("/api/newQuestion")) {
-            Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
-            Survey product = new Survey();
-            product.setSurveyName(queryMap.get("productName"));
-            surveyList.add(product);
-            writeOkResponse(clientSocket, "it is done", "text/html");
-        } else if (fileTarget.equals("/api/categoryOptions")){
+        InputStream fileResource = getClass().getResourceAsStream(fileTarget);
+        if (fileResource != null) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            fileResource.transferTo(buffer);
+            String responseText = buffer.toString();
 
-
-            int value = 1;
-        for (String survey : surveyDao.listAll()) {
-                responseText += "<option value=" + (value++) + ">" + survey + "</option>";
+            String contentType = "text/plain";
+            if (requestTarget.endsWith(".html")) {
+                contentType = "text/html";
+            } else if (requestTarget.endsWith("css")) {
+                contentType = "text/css";
             }
-
-            writeOkResponse(clientSocket, responseText, "text/html");
-        } else if (fileTarget.equals("/api/products")){
-            for (int i = 0; i < surveyList.size(); i++) {
-                responseText += "<p>" + surveyList.get(i).geSurveyName() + "</p>";
-            }
-
-            writeOkResponse(clientSocket, responseText, "text/html");
-        } else {
-            InputStream fileResource = getClass().getResourceAsStream(fileTarget);
-            if(fileResource != null) {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                fileResource.transferTo(buffer);
-                responseText = buffer.toString();
-
-                String contentType = "text/plain";
-                if (requestTarget.endsWith(".html")){
-                    contentType = "text/html";
-                }
-                writeOkResponse(clientSocket, responseText, contentType);
-                return;
-            }
-
-            responseText = "File not found: " + requestTarget;
-
-            String response = "HTTP/1.1 404 Not found\r\n" +
-                    "Content-Length: " + responseText.length() + "\r\n" +
-                    "Connection: close\r\n" +
-                    "\r\n" +
-                    responseText;
-            clientSocket.getOutputStream().write(response.getBytes());
+            writeOkResponse(clientSocket, responseText, contentType);
+            return;
         }
-    }
 
+        String responseText = "File not found: " + requestTarget;
 
-    private Map<String, String> parseRequestParameters(String query) {
-        Map<String, String> queryMap = new HashMap<>();
-        for (String queryParameter : query.split("&")) {
-            int equalPos = queryParameter.indexOf('=');
-            String parameterName = queryParameter.substring(0, equalPos);
-            String parameterValue = queryParameter.substring(equalPos + 1);
-            queryMap.put(parameterName, URLDecoder.decode(parameterValue, StandardCharsets.UTF_8));
-        }
-        return queryMap;
+        String response = "HTTP/1.1 404 Not found\r\n" +
+                "Content-Length: " + responseText.length() + "\r\n" +
+                "Connection: close \r\n" +
+                "\r\n" +
+                responseText;
+        clientSocket.getOutputStream().write(response.getBytes());
     }
 
 
@@ -161,9 +124,6 @@ public class HttpServer {
         this.survey = categories;
     }
 
-    public List<Survey> getProducts() {
-        return surveyList;
-    }
 
     public void addController(String path, HttpController controller) {
         this.controllers.put(path, controller);
