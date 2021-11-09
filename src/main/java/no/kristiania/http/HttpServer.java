@@ -4,6 +4,7 @@ import no.kristiania.survey.SurveyDao;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -19,19 +20,10 @@ public class HttpServer {
     private List<String> survey = new ArrayList<>();
     private Map<String, HttpController> controllers = new HashMap<>();
 
-    PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
 
     public HttpServer(int serverPort) throws IOException {
         serverSocket = new ServerSocket(serverPort);
         new Thread(this::handleClients).start();
-    }
-
-    public void createDataSource() {
-        dataSource.setURL("jdbc:postgresql://localhost:5432/postgres");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("6RLBqvkKpFXptjwnKm");
-        surveyDao = new SurveyDao(dataSource);
     }
 
 
@@ -113,6 +105,25 @@ public class HttpServer {
         HttpServer httpServer = new HttpServer(1962);
         httpServer.createDataSource();
         httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));
+        System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
+    }
+
+
+    public void createDataSource() throws IOException {
+        Properties properties = new Properties();
+        try (FileReader reader = new FileReader("pgr203.properties")) {
+            properties.load(reader);
+        }
+
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setURL(properties.getProperty( "dataSource.url",
+                "jdbc:postgresql://localhost:5432/postgres"
+        ));
+        dataSource.setUser(properties.getProperty("dataSource.user", "postgres"));
+        dataSource.setPassword(properties.getProperty("dataSource.password"));
+        //Flyway.configure().dataSource(dataSource).load().migrate();
+        //litt usikker på hva surveyDao gjør her
+        surveyDao = new SurveyDao(dataSource);
     }
 
 
