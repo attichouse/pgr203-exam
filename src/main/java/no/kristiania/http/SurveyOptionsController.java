@@ -1,9 +1,8 @@
 package no.kristiania.http;
 
+import no.kristiania.survey.Survey;
 import no.kristiania.survey.SurveyDao;
 
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.sql.SQLException;
 
 public class SurveyOptionsController implements HttpController {
@@ -19,7 +18,7 @@ public class SurveyOptionsController implements HttpController {
         String responseText = "";
 
         int value = 1;
-        for (String survey : surveyDao.listAll()) {
+        for (Survey survey : surveyDao.listAll()) {
             responseText += "<option value=" + (value++) + ">" + survey + "</option>";
 
         }
