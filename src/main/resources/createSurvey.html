@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add a new product | Webshop</title>
+    <title>Create a new survey</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <main>
-    <h1>Add a new question</h1>
+    <h1>Create a new survey</h1>
+    <form action="/api/newSurvey" method="post">
+        <p><label>Survey title: <input type="text" name="surveyName"></label><button>Submit</button></p>
+    </form>
     <form action="/api/newQuestion" method="POST">
         <p><label>Survey category: <select name="category" id="category"></select></label></p>
         <p><label>Question: <input type="text" name="productName" /></label></p>
