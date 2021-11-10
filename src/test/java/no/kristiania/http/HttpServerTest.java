@@ -48,7 +48,7 @@ public class HttpServerTest {
         Files.write(Paths.get("target/test-classes/example-file.html"), fileContent.getBytes());
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.html");
-        assertEquals("text/html", client.getHeader("Content-Type"));
+        assertEquals("text/html; charset=UTF-8", client.getHeader("Content-Type"));
     }
 
     /*@Test

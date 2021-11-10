@@ -70,7 +70,7 @@ public class HttpServer {
 
             String contentType = "text/plain";
             if (requestTarget.endsWith(".html")) {
-                contentType = "text/html";
+                contentType = "text/html; charset=UTF-8";
             } else if (requestTarget.endsWith("css")) {
                 contentType = "text/css";
             }
