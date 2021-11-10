@@ -52,6 +52,7 @@ public class HttpServerTest {
     }
 
     /*@Test
+    Vet ikke om skal være survey eller string
     void shouldReturnSurveyNameFromServer() throws IOException, SQLException {
         //need to change the options to what we want them to be
         SurveyDao surveyDao = new SurveyDao(TestData.testDataSource());

@@ -30,7 +30,7 @@ public class HttpMessage {
     }
 
 
-    private Map<String, String> parseRequestParameters(String query) {
+    public static Map<String, String> parseRequestParameters(String query) {
         Map<String, String> queryMap = new HashMap<>();
         for (String queryParameter : query.split("&")) {
             int equalPos = queryParameter.indexOf('=');

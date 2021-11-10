@@ -1,10 +1,7 @@
 package no.kristiania.http;
 
-import no.kristiania.survey.SurveyDao;
-import org.postgresql.ds.PGSimpleDataSource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -15,10 +12,7 @@ import java.util.*;
 public class HttpServer {
 
     private ServerSocket serverSocket;
-    private SurveyDao surveyDao;
-    //ENDRE CATEGORIES OG PRODUCT TIL DET SOM PASSER!!!!!
-    private List<String> survey = new ArrayList<>();
-    private Map<String, HttpController> controllers = new HashMap<>();
+    private HashMap<String, HttpController> controllers = new HashMap<>();
 
 
     public HttpServer(int serverPort) throws IOException {
@@ -101,40 +95,9 @@ public class HttpServer {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        HttpServer httpServer = new HttpServer(1962);
-        httpServer.createDataSource();
-        httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));
-        System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
-    }
-
-
-    public void createDataSource() throws IOException {
-        Properties properties = new Properties();
-        try (FileReader reader = new FileReader("pgr203.properties")) {
-            properties.load(reader);
-        }
-
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setURL(properties.getProperty( "dataSource.url",
-                "jdbc:postgresql://localhost:5432/postgres"
-        ));
-        dataSource.setUser(properties.getProperty("dataSource.user", "postgres"));
-        dataSource.setPassword(properties.getProperty("dataSource.password"));
-        //Flyway.configure().dataSource(dataSource).load().migrate();
-        //litt usikker på hva surveyDao gjør her
-        surveyDao = new SurveyDao(dataSource);
-    }
-
-
     public int getPort() {
         return serverSocket.getLocalPort();
     }
-
-    public void setCategories(List<String> categories) {
-        this.survey = categories;
-    }
-
 
     public void addController(String path, HttpController controller) {
         this.controllers.put(path, controller);
