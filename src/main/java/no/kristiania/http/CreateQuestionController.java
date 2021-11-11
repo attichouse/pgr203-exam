@@ -17,7 +17,7 @@ public class CreateQuestionController implements HttpController{
     public HttpMessage handle(HttpMessage request) throws SQLException {
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Question question = new Question();
-        question.setQuestionDescription(queryMap.get("description"));
+        question.setQuestionDescription(queryMap.get("question"));
         questionDao.save(question);
 
         return new HttpMessage("HTTP/1.1 200 ok", "It is done");
