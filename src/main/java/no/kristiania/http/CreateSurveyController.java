@@ -10,7 +10,6 @@ public class CreateSurveyController implements HttpController {
 
     public CreateSurveyController(SurveyDao surveyDao) {
         this.surveyDao = surveyDao;
-
     }
 
     @Override

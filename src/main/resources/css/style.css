@@ -1,5 +1,5 @@
 body {
-    background-color: #76a5af;
+    background-color: #2F4550;
 }
 main {
     padding: 1em;
@@ -10,6 +10,21 @@ main {
 
 ul {
     list-style: none;
+}
+
+li {
+    padding: 5px;
+    text-align: center;
+}
+
+a:link, a:visited {
+    background-color: #76a5af;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
 }
 
 h1 {
