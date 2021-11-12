@@ -18,6 +18,7 @@ public class CreateQuestionController implements HttpController {
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Question question = new Question();
         question.setQuestionDescription(queryMap.get("question"));
+        question.setQuestionAlternatives(queryMap.get("questionAlternatives"));
         question.setQuestionIdFk(Long.parseLong(queryMap.get("survey")));
         questionDao.save(question);
 

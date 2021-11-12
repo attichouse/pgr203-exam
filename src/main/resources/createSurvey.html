@@ -17,10 +17,10 @@
             <form action="/api/newQuestion" method="post">
                 <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
                 <p><label>Question: <input type="text" name="question"/></label></p>
-                <form action="/api/newAnswer" method="post">
-                    <p><label>Svaralternativ: <input type="text" name="answer" /></label></p>
+                <!--<form action="/api/newAnswer" method="post">-->
+                    <p><label>Svaralternativ (separer med semikolon): <input type="text" name="questionAlternatives" /></label></p>
                     <p><button>Submit</button></p>
-                </form>
+                <!--</form>-->
             </form>
 
             <a href="index.html"><button>Back</button></a>

@@ -5,6 +5,7 @@ public class Question {
     private long questionId;
     private String questionDescription;
     private long questionIdFk;
+    private String questionAlternatives;
 
     public long getQuestionId() {
         return questionId;
@@ -28,5 +29,17 @@ public class Question {
 
     public void setQuestionIdFk(long questionIdFk) {
         this.questionIdFk = questionIdFk;
+    }
+
+    public String getQuestionAlternatives() {
+        return questionAlternatives;
+    }
+
+    public void setQuestionAlternatives(String questionAlternatives) {
+        this.questionAlternatives = questionAlternatives;
+    }
+    @Override
+    public String toString() {
+        return "Question: " + questionDescription;
     }
 }
