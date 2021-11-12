@@ -8,7 +8,8 @@ import no.kristiania.survey.QuestionDao;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class UserAnswersController implements HttpController{
+public class UserAnswersController implements HttpController {
+
     private final AnswerDao answerDao;
     public UserAnswersController(AnswerDao answerDao){
         this.answerDao = answerDao;
@@ -19,7 +20,7 @@ public class UserAnswersController implements HttpController{
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Answer answer = new Answer();
         answer.setUser_answer(queryMap.get("answer"));
-        answer.setAnswer_id(Long.parseLong(queryMap.get("survey")));
+        answer.setQuestion_id(Long.parseLong(queryMap.get("question")));
         answerDao.save(answer);
 
         return new HttpMessage("HTTP/1.1 200 ok", "It is done");

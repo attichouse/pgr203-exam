@@ -17,8 +17,10 @@
             <form action="/api/newQuestion" method="post">
                 <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
                 <p><label>Question: <input type="text" name="question"/></label></p>
-                <form action="/api/newAnswer"><p><label>Svaralternativ: <input type="text" name="productName" /></label></p></form>
-                <p><button>Submit</button></p>
+                <form action="/api/newAnswer" method="post">
+                    <p><label>Svaralternativ: <input type="text" name="answer" /></label></p>
+                    <p><button>Submit</button></p>
+                </form>
             </form>
 
             <a href="index.html"><button>Back</button></a>
