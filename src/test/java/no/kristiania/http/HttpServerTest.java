@@ -1,7 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.survey.SurveyDao;
-import no.kristiania.survey.TestData;
+
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
