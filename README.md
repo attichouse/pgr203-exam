@@ -2,6 +2,20 @@
 
 [![Java CI with Maven](https://github.com/kristiania-pgr203-2021/pgr203-exam-attichouse/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-attichouse/actions/workflows/maven.yml)
 
+TODO:
+ - Fikse æøå
+ - Legge til svaralternativ
+ - Få til å skrive ut alle spørsmål
+ - Fikse at siden oppdateres i stedet for at man må trykke tilbake på it is done
+ - Kunne ta spørreundersøkelse
+ - Skrive tester
+ - Beskrive koden i readme filen
+ - Lage diagram
+
+
+
+
+
 ## Beskriv hvordan programmet skal testes:
 
 ## Korreksjoner av eksamensteksten i Wiseflow:
