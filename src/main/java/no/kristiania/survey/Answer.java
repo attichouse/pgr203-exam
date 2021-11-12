@@ -2,7 +2,7 @@ package no.kristiania.survey;
 
 public class Answer {
     private long answer_id;
-    private String user_answer;
+    private String answer_text;
     private long question_id;
 
     public long getQuestion_id() {
@@ -21,11 +21,11 @@ public class Answer {
         this.answer_id = answer_id;
     }
 
-    public String getUser_answer() {
-        return user_answer;
+    public String getAnswer_text() {
+        return answer_text;
     }
 
-    public void setUser_answer(String user_answer) {
-        this.user_answer = user_answer;
+    public void setAnswer_text(String answer_text) {
+        this.answer_text = answer_text;
     }
 }

@@ -14,10 +14,10 @@ public class AnswerDao {
         try (Connection connection = dataSource.getConnection())
         {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "insert into user_answer (user_answer, question_id) values (?, ?)",
+                    "insert into user_answer (answer_text, question_id) values (?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
-                statement.setString(1, answer.getUser_answer());
+                statement.setString(1, answer.getAnswer_text());
                 statement.setLong(2, answer.getQuestion_id());
                 statement.executeUpdate();
 
@@ -27,8 +27,6 @@ public class AnswerDao {
                 }
             }
         }
-
-
     }
 
 
@@ -47,10 +45,11 @@ public class AnswerDao {
         }
     }
 
+
     private Answer readFromResultSet(ResultSet rs) throws SQLException {
         Answer answer = new Answer();
         answer.setAnswer_id(rs.getLong("answer_id"));
-        answer.setUser_answer(rs.getString("user_answer"));
+        answer.setAnswer_text(rs.getString("answer_text"));
         answer.setQuestion_id(rs.getLong("question_id"));
         return answer;
     }

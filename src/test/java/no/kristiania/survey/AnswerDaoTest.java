@@ -19,7 +19,7 @@ public class AnswerDaoTest {
 
         Answer exampleAnswer = new Answer();
         exampleAnswer.setQuestion_id(1);
-        exampleAnswer.setUser_answer("Pink");
+        exampleAnswer.setAnswer_text("Pink");
         answerDao.save(exampleAnswer);
 
         assertThat(answerDao.retrieve(exampleAnswer.getAnswer_id()))

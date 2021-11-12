@@ -2,8 +2,6 @@ package no.kristiania.http;
 
 import no.kristiania.survey.Answer;
 import no.kristiania.survey.AnswerDao;
-import no.kristiania.survey.Question;
-import no.kristiania.survey.QuestionDao;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -19,7 +17,7 @@ public class UserAnswersController implements HttpController {
     public HttpMessage handle(HttpMessage request) throws SQLException {
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Answer answer = new Answer();
-        answer.setUser_answer(queryMap.get("answer"));
+        answer.setAnswer_text(queryMap.get("answer"));
         answer.setQuestion_id(Long.parseLong(queryMap.get("question")));
         answerDao.save(answer);
 
