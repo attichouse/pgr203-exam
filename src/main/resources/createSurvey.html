@@ -7,15 +7,16 @@
     </head>
     <body>
         <main>
-            <h1>Lag en ny spørreundersøkelse</h1>
+            <h1>Lag en ny survey</h1>
 
             <form action="/api/newSurvey" method="post">
-                <p><label>Navn på spørreundersøkelse: <input type="text" name="surveyName"></label> <button>Submit</button></p>
+                <p><label>Navn for survey: <input type="text" name="surveyName"></label> <button>Submit</button></p>
             </form>
+
             <br>
             <form action="/api/newQuestion" method="post">
-                <p><label>Velg spørreundersøkelse:<select name="surveyName" id="surveys"></select></label></p>
-                <p><label>Spørsmål: <input type="text" name="question" /></label></p>
+                <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
+                <p><label>Question: <input type="text" name="question"/></label></p>
                 <p><label>Svaralternativ: <input type="text" name="productName" /></label></p>
 
                 <p><button>Submit</button></p>

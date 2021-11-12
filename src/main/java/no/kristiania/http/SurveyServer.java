@@ -18,6 +18,7 @@ public class SurveyServer {
         httpServer.addController("/api/newSurvey", new CreateSurveyController(surveyDao));
         httpServer.addController("/api/newQuestion", new CreateQuestionController(questionDao));
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));
+
         /*httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));*/
         System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
     }
