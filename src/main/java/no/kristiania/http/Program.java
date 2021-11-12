@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.survey.AnswerDao;
 import no.kristiania.survey.QuestionDao;
 import no.kristiania.survey.SurveyDao;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -14,10 +15,12 @@ public class Program {
         DataSource dataSource = createDataSource();
         SurveyDao surveyDao = new SurveyDao(dataSource);
         QuestionDao questionDao = new QuestionDao(dataSource);
+        AnswerDao answerDao = new AnswerDao(dataSource);
         HttpServer httpServer = new HttpServer(1962);
         httpServer.addController("/api/newSurvey", new CreateSurveyController(surveyDao));
         httpServer.addController("/api/newQuestion", new CreateQuestionController(questionDao));
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));
+        httpServer.addController("/api/newAnswer", new UserAnswersController(answerDao));
 
         /*httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));*/
         System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
