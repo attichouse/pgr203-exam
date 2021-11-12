@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-public class SurveyServer {
+public class Program {
     public static void main(String[] args) throws IOException {
         DataSource dataSource = createDataSource();
         SurveyDao surveyDao = new SurveyDao(dataSource);
