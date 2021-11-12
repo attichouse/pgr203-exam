@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Skriv ut svar</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <main>
+            <h1>Skriv ut svar</h1>
+
+            <form action="/api/listQuestions" method="post">
+                <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
+
+
+            </form>
+
+
+            <p><a href="index.html"><button>Back</button></a></p>
+        </main>
+
+    <script>
+        fetch("/api/surveyOptions").then(function (res) {
+            return res.text()
+        }).then(function (text) {
+            document.getElementById("surveys").innerHTML = text;
+        })
+    </script>
+
+    </body>
+</html>
