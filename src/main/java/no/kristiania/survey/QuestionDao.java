@@ -55,6 +55,7 @@ public class QuestionDao {
         question.setQuestionId(rs.getLong("question_id"));
         question.setQuestionDescription(rs.getString("description"));
         question.setQuestionIdFk(rs.getLong("survey_id"));
+        question.setQuestionAlternatives(rs.getString("question_alternatives"));
         return question;
     }
 

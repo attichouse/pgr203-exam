@@ -40,6 +40,16 @@ public class Question {
     }
     @Override
     public String toString() {
-        return "Question: " + questionDescription;
+        String s = "<p>" + questionDescription +"</p>";
+        s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativer\">";
+        if (questionAlternatives != null) {
+            String[] sa = questionAlternatives.split(";");
+            int value = 1;
+            for (String so: sa) {
+                s += "<option value=" + (value++) + ">" + so + "</option>";
+            }
+        }
+        s += "</select></label>";
+        return s;
     }
 }
