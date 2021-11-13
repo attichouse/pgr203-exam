@@ -17,8 +17,8 @@ public class UserAnswersController implements HttpController {
     public HttpMessage handle(HttpMessage request) throws SQLException {
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Answer answer = new Answer();
-        answer.setAnswer_text(queryMap.get("answer"));
-        answer.setQuestion_id(Long.parseLong(queryMap.get("question")));
+        answer.setAnswer_text(queryMap.get("alternativ"));
+        answer.setQuestion_id(Long.parseLong(queryMap.get("questionid")));
         answerDao.save(answer);
 
         return new HttpMessage("HTTP/1.1 200 ok", "It is done");

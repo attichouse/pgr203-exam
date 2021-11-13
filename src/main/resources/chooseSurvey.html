@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose a survey</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+    <h1>Velg en survey</h1>
+
+    <form action="/takeSurvey.html" method="post">
+        <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
+        <button>Submit</button>
+    </form>
+
+    <a href="index.html"><button>Back</button></a>
+</main>
+</body>
+<script>
+    fetch("/api/surveyOptions").then(function(res) {
+        return res.text()
+    }).then(function(text) {
+        document.getElementById("surveys").innerHTML = text;
+    });
+</script>
+</html>

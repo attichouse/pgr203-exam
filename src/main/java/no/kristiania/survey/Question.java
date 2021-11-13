@@ -40,13 +40,13 @@ public class Question {
     }
     @Override
     public String toString() {
-        String s = "<p>" + questionDescription +"</p>";
-        s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativer\">";
+        String s = "<p>" + questionDescription + "</p>";
+        s += "<label><input type= \"hidden\" name=\"questionid\" value=" + questionId + "> </label>";
+        s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativ\">";
         if (questionAlternatives != null) {
             String[] sa = questionAlternatives.split(";");
-            int value = 1;
             for (String so: sa) {
-                s += "<option value=" + (value++) + ">" + so + "</option>";
+                s += "<option value=" + so + ">" + so + "</option>";
             }
         }
         s += "</select></label>";
