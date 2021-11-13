@@ -9,6 +9,8 @@
         <main>
             <h1>Take survey</h1>
 
+            <p><label>Choose survey: <select name="survey" id="surveys" onchange="fillQuestions()"></select></label></p>
+
             <form action="/api/newAnswer" method="post">
                 <ul id="qa">
                 </ul>
@@ -18,10 +20,20 @@
         </main>
     </body>
     <script>
-        fetch("/api/questionOptions?surveyid=2").then(function(res) {
+        fetch("/api/surveyOptions").then(function(res) {
             return res.text()
-        }).then(function (text) {
-            document.querySelector("#qa").innerHTML = text;
-        })
+        }).then(function(text) {
+            document.getElementById("surveys").innerHTML = text;
+            document.getElementById("surveys").selectedIndex = -1;
+        });
+        function fillQuestions() {
+            var sid = document.getElementById("surveys").value;
+            fetch("/api/questionOptions?surveyid="+sid).then(function(res) {
+                return res.text()
+            }).then(function (text) {
+                document.querySelector("#qa").innerHTML = text;
+            })
+        }
+
     </script>
 </html>
