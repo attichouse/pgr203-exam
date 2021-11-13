@@ -41,6 +41,13 @@ public class HttpMessage {
         return queryMap;
     }
 
+    public String parameterLine() {
+        String s = startLine.substring(startLine.indexOf("?")+1);
+        String[] sr = s.split(" ");
+        return sr[0];
+
+    }
+
 
     private int getContentLength() {
         return Integer.parseInt(getHeader("Content-Length"));

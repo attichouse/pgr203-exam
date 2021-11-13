@@ -2,6 +2,7 @@ package no.kristiania.survey;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class AnswerDao {
     private final DataSource dataSource;
@@ -52,5 +53,20 @@ public class AnswerDao {
         answer.setAnswer_text(rs.getString("answer_text"));
         answer.setQuestion_id(rs.getLong("question_id"));
         return answer;
+    }
+
+    public ArrayList<Answer> listSurvey(long questionid) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from user_answer where question_id = ?")) {
+                statement.setLong(1, questionid);
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<Answer> result = new ArrayList<>();
+                    while (rs.next()) {
+                        result.add(readFromResultSet(rs));
+                    }
+                    return result;
+                }
+            }
+        }
     }
 }

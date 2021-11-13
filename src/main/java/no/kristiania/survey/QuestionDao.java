@@ -72,4 +72,18 @@ public class QuestionDao {
             }
         }
     }
+    public ArrayList<Question> listSurvey(long surveyid) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from questions where survey_id = ?")) {
+                statement.setLong(1, surveyid);
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<Question> result = new ArrayList<>();
+                    while (rs.next()) {
+                        result.add(readFromResultSet(rs));
+                    }
+                    return result;
+                }
+            }
+        }
+    }
 }

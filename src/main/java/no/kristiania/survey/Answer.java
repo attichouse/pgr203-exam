@@ -28,4 +28,9 @@ public class Answer {
     public void setAnswer_text(String answer_text) {
         this.answer_text = answer_text;
     }
+
+    @Override
+    public String toString() {
+        return "<p>" + answer_text + "</p>";
+    }
 }

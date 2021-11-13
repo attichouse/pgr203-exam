@@ -22,6 +22,8 @@ public class Program {
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));
         httpServer.addController("/api/newAnswer", new UserAnswersController(answerDao));
         httpServer.addController("/api/questionOptions", new QuestionOptionsController(questionDao));
+        httpServer.addController("/api/listQuestions", new QuestionListController(questionDao));
+        httpServer.addController("/api/listAnswers", new ListUserAnswersController(answerDao));
 
         /*httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));*/
         System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");

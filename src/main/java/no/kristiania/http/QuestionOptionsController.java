@@ -6,6 +6,7 @@ import no.kristiania.survey.Survey;
 import no.kristiania.survey.SurveyDao;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class QuestionOptionsController implements HttpController{
     private final QuestionDao questionDao;
@@ -18,9 +19,9 @@ public class QuestionOptionsController implements HttpController{
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
         String responseText = "";
-
-        int value = 1;
-        for (Question question : questionDao.listAll()) {
+        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
+        Long sid = Long.parseLong(queryMap.get("surveyid"));
+        for (Question question : questionDao.listSurvey(sid)) {
             responseText += question;
         }
         return new HttpMessage("HTTP/1.1 200 OK", responseText);

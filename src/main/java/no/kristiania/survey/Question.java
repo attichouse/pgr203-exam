@@ -38,9 +38,14 @@ public class Question {
     public void setQuestionAlternatives(String questionAlternatives) {
         this.questionAlternatives = questionAlternatives;
     }
+
+    public String toListString() {
+        return "<option value=" + questionId + ">" + questionDescription + "</option>";
+    }
+
     @Override
     public String toString() {
-        String s = "<p>" + questionDescription + "</p>";
+        String s = "<li><p>" + questionDescription + "</p>";
         s += "<label><input type= \"hidden\" name=\"questionid\" value=" + questionId + "> </label>";
         s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativ\">";
         if (questionAlternatives != null) {
@@ -49,7 +54,7 @@ public class Question {
                 s += "<option value=" + so + ">" + so + "</option>";
             }
         }
-        s += "</select></label>";
+        s += "</select></label></li>";
         return s;
     }
 }
