@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="shortcut icon" type="image/x-icon" href="/images/Icojam-Matreshka-Red-matreshka-inside-icon.ico"/>
         <meta charset="UTF-8">
-        <title>Skriv ut svar</title>
+        <title>Print answers</title>
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <main>
-            <h1>Skriv ut svar</h1>
+            <h1>Print answers</h1>
             <p><label>Choose survey: <select name="survey" id="survey" onchange="fillQuestion()"></select></label></p>
             <p><label>Choose question: <select name="question" id="question" onchange="fillList()"></select></label></p>
             <p><label id="userAnswers">List user answers:</label></p>
@@ -25,7 +26,6 @@
             })
         }
         function fillList() {
-            console.log("lol");
             var qid = document.getElementById("question").value;
             fetch("/api/listAnswers?questionid="+qid).then(function (res) {
                 return res.text()

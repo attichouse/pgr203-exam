@@ -47,7 +47,7 @@ public class Question {
     public String toString() {
         String s = "<li><p>" + questionDescription + "</p>";
         s += "<label><input type= \"hidden\" name=\"questionid\" id = \"questionid\" value=" + questionId + "> </label>";
-        s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativ\">";
+        s += "<label>Answer options: <select name=\"alternativ\" id=\"alternativ\">";
         if (questionAlternatives != null) {
             String[] sa = questionAlternatives.split(";");
             for (String so: sa) {

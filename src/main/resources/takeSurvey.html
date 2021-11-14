@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="shortcut icon" type="image/x-icon" href="/images/Icojam-Matreshka-Red-matreshka-inside-icon.ico"/>
         <meta charset="UTF-8">
         <title>Take Survey</title>
         <link rel="stylesheet" href="css/style.css">
@@ -15,7 +16,7 @@
             <a href="index.html">Back</a>
         </main>
     </body>
-    <script>
+    <script type="text/javascript" charset="UTF-8">
         fetch("/api/surveyOptions").then(function(res) {
             return res.text()
         }).then(function(text) {
@@ -36,20 +37,21 @@
             for (i = 0; i < myArray.length; i++) {
                 var data = {
                     "questionId": myArray[i].getElementsByTagName("label")[0].getElementsByTagName("input")[0].value,
-                    "alternative" +
-                        "": myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value
+                    "alternative": myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value
                 }
                     console.log(data);
+
                 var p =
                     "questionId="+ myArray[i].getElementsByTagName("label")[0].getElementsByTagName("input")[0].value+
                     "&alternativ="+ myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value;
 
+                    console.log(p);
 
                     fetch("/api/newAnswer",
                 {
                     method: "POST",
                         headers:
-                    {"Content-Type":"application/json",
+                    {"Content-type":"application/x-www-form-urlencoded",
                     }
                 ,body: p,
                 }
