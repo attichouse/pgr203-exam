@@ -8,10 +8,10 @@
     </head>
     <body>
         <main>
-            <h1>Lag en ny spørreundersøkelse</h1>
+            <h1>Create a new surveye</h1>
 
             <form action="/api/newSurvey" method="post">
-                <p><label>Navn for survey: <input type="text" name="surveyName"></label><button>Submit</button></p>
+                <p><label>Name for survey: <input type="text" name="surveyName"></label><button>Submit</button></p>
             </form>
             <button onClick="window.location.href=window.location.href">Refresh survey list</button>
 
@@ -19,7 +19,7 @@
             <form action="/api/newQuestion" method="post">
                 <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
                 <p><label>Question: <input type="text" name="question"/></label></p>
-                <p><label>Svaralternativ (separer med semikolon): <input type="text" name="questionAlternatives"/></label></p>
+                <p><label>Answer options (separate with semicolon): <input type="text" name="questionAlternatives"/></label></p>
                 <p><button>Submit</button></p>
             </form>
 
