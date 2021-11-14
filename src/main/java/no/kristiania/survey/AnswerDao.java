@@ -18,13 +18,13 @@ public class AnswerDao {
                     "insert into user_answer (answer_text, question_id) values (?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
-                statement.setString(1, answer.getAnswer_text());
-                statement.setLong(2, answer.getQuestion_id());
+                statement.setString(1, answer.getAnswerText());
+                statement.setLong(2, answer.getQuestionId());
                 statement.executeUpdate();
 
                 try (ResultSet rs = statement.getGeneratedKeys()) {
                     rs.next();
-                    answer.setAnswer_id(rs.getLong("answer_id"));
+                    answer.setAnswerId(rs.getLong("answer_id"));
                 }
             }
         }
@@ -49,9 +49,9 @@ public class AnswerDao {
 
     private Answer readFromResultSet(ResultSet rs) throws SQLException {
         Answer answer = new Answer();
-        answer.setAnswer_id(rs.getLong("answer_id"));
-        answer.setAnswer_text(rs.getString("answer_text"));
-        answer.setQuestion_id(rs.getLong("question_id"));
+        answer.setAnswerId(rs.getLong("answer_id"));
+        answer.setAnswerText(rs.getString("answer_text"));
+        answer.setQuestionId(rs.getLong("question_id"));
         return answer;
     }
 

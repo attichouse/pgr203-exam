@@ -22,11 +22,11 @@ public class AnswerDaoTest {
         questionDao.save(exampleQuestion);
 
         Answer exampleAnswer = new Answer();
-        exampleAnswer.setQuestion_id(1);
-        exampleAnswer.setAnswer_text("Pink");
+        exampleAnswer.setQuestionId(1);
+        exampleAnswer.setAnswerText("Pink");
         answerDao.save(exampleAnswer);
 
-        assertThat(answerDao.retrieve(exampleAnswer.getAnswer_id()))
+        assertThat(answerDao.retrieve(exampleAnswer.getAnswerId()))
                 .usingRecursiveComparison()
                 .isEqualTo(exampleAnswer);
     }

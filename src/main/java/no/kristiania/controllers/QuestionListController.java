@@ -1,6 +1,7 @@
 package no.kristiania.controllers;
 
 import no.kristiania.http.HttpMessage;
+import no.kristiania.survey.Question;
 import no.kristiania.survey.QuestionDao;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class QuestionListController implements HttpController{
     private final QuestionDao questionDao;
+    private final Question question = new Question();
 
     public QuestionListController(QuestionDao questionDao) {
         this.questionDao = questionDao;
@@ -23,7 +25,7 @@ public class QuestionListController implements HttpController{
 
     private String getBody() throws SQLException {
         return questionDao.listAll()
-                .stream().map(m -> "<option value=" + m.getQuestionIdFk() + ">" + m.getQuestionDescription() + "</option>")
+                .stream().map(m -> "<option value=" + m.getQuestionId() + ">" + m.getQuestionDescription() + "</option>")
                 .collect(Collectors.joining());
 
     }
