@@ -9,13 +9,9 @@
         <main>
             <h1>Take survey</h1>
 
-            <p><label>Choose survey: <select name="survey" id="surveys" onchange="fillQuestions()"></select></label></p>
-
-            <form action="/api/newAnswer" method="post">
-                <ul id="qa">
-                </ul>
-                <p><button>Submit</button></p>
-            </form>
+            <p><label>Choose survey: <select name="surveys" id="surveys" onchange="fillQuestions()"></select></label></p>
+            <ul name="qa" id="qa"></ul>
+            <p><button onclick="submitData()">Submit</button></p>
             <p><a href="index.html"><button>Back</button></a></p>
         </main>
     </body>
@@ -33,6 +29,43 @@
             }).then(function (text) {
                 document.querySelector("#qa").innerHTML = text;
             })
+        }
+        function submitData() {
+            var myArray = document.getElementById("qa").getElementsByTagName("li");
+            console.log(myArray);
+            for (i = 0; i < myArray.length; i++) {
+                var data = {
+                    "questionId": myArray[i].getElementsByTagName("label")[0].getElementsByTagName("input")[0].value,
+                    "alternativ": myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value
+                }
+                    console.log(data);
+                var p =
+                    "questionId="+ myArray[i].getElementsByTagName("label")[0].getElementsByTagName("input")[0].value+
+                    "&alternativ="+ myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value;
+
+
+                    fetch("/api/newAnswer?"+ p,
+                {
+                    method: "POST",
+                        headers:
+                    {"Content-Type":"application/json",
+                    }
+                ,body: p,
+                }
+            )
+            .
+                then(response => response.json())
+                    .then(data => {
+                        console.log("Success:", data);
+                        window.location.replace("registration.html");
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        window.location.replace("registration.html");
+                    });
+
+
+            }
         }
 
     </script>

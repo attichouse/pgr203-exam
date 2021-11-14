@@ -16,7 +16,7 @@ public class Program {
         SurveyDao surveyDao = new SurveyDao(dataSource);
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
-        HttpServer httpServer = new HttpServer(1962);
+        HttpServer httpServer = new HttpServer(1963);
         httpServer.addController("/api/newSurvey", new CreateSurveyController(surveyDao));
         httpServer.addController("/api/newQuestion", new CreateQuestionController(questionDao));
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));

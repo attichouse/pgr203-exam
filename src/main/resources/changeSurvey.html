@@ -7,9 +7,27 @@
 </head>
 <body>
     <main>
-        <h1>Change Survey</h1>
+        <h1>Change question</h1>
+
+        <p><label>Choose survey: <select name="surveys" id="surveys" onchange="fillQuestions()"></select></label></p>
+        <ul name="qa" id="qa"></ul>
         <p><a href="index.html"><button>Back</button></a></p>
 
     </main>
 </body>
+<script>
+    fetch("/api/surveyOptions").then(function(res) {
+        return res.text()
+    }).then(function(text) {
+        document.getElementById("surveys").innerHTML = text;
+    });
+    function fillQuestions() {
+        var sid = document.getElementById("surveys").value;
+        fetch("/api/questionOptions?surveyid="+sid).then(function(res) {
+            return res.text()
+        }).then(function (text) {
+            document.querySelector("#qa").innerHTML = text;
+        })
+    }
+</script>
 </html>

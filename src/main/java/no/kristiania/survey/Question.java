@@ -46,7 +46,7 @@ public class Question {
     @Override
     public String toString() {
         String s = "<li><p>" + questionDescription + "</p>";
-        s += "<label><input type= \"hidden\" name=\"questionid\" value=" + questionId + "> </label>";
+        s += "<label><input type= \"hidden\" name=\"questionid\" id = \"questionid\" value=" + questionId + "> </label>";
         s += "<label>Svaralternativer: <select name=\"alternativ\" id=\"alternativ\">";
         if (questionAlternatives != null) {
             String[] sa = questionAlternatives.split(";");
