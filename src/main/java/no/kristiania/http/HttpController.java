@@ -1,7 +1,10 @@
 package no.kristiania.http;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 
 public interface HttpController {
-    HttpMessage handle(HttpMessage request) throws SQLException;
+
+    void handle(HttpMessage request, Socket socket) throws SQLException, IOException;
 }
