@@ -11,7 +11,7 @@ public class QuestionDaoTest {
 
 
     @Test
-    void shouldRetrieveSavedQuestions() throws SQLException {
+    void shouldRetrieveSavedQuestion() throws SQLException {
         Survey survey = exampleSurvey();
         surveyDao.save(survey);
 

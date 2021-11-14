@@ -5,11 +5,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AnswerDao {
+
     private final DataSource dataSource;
 
     public AnswerDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
 
     public void save(Answer answer) throws SQLException {
         try (Connection connection = dataSource.getConnection())
@@ -55,6 +57,7 @@ public class AnswerDao {
         return answer;
     }
 
+
     public ArrayList<Answer> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from user_answer")) {
@@ -68,6 +71,7 @@ public class AnswerDao {
             }
         }
     }
+
 
     public ArrayList<Answer> listByQuestion(long questionId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {

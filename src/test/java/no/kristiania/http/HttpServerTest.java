@@ -1,9 +1,15 @@
 package no.kristiania.http;
 
+import no.kristiania.controllers.SurveyOptionsController;
+import no.kristiania.survey.Survey;
+import no.kristiania.survey.SurveyDao;
+import no.kristiania.survey.TestData;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HttpServerTest {
 
     private final HttpServer server = new HttpServer(0);
+    private SurveyDao surveyDao = new SurveyDao(TestData.testDataSource());
 
     public HttpServerTest() throws IOException {
     }
@@ -22,11 +29,13 @@ public class HttpServerTest {
         assertEquals(404, client.getStatusCode());
     }
 
+
     @Test
     void shouldRespond404() throws IOException {
         HttpClient client = new HttpClient("localhost", server.getPort(), "/non-existing");
         assertEquals("File not found: /non-existing", client.getMessageBody());
     }
+
 
     @Test
     void shouldServeFiles() throws IOException {
@@ -38,6 +47,7 @@ public class HttpServerTest {
         assertEquals("text/plain", client.getHeader("Content-Type"));
     }
 
+
     @Test
     void shouldUseFileExtensionForContentType() throws IOException {
         String fileContent = "<p>Hello</p>";
@@ -47,20 +57,26 @@ public class HttpServerTest {
         assertEquals("text/html; charset=UTF-8", client.getHeader("Content-Type"));
     }
 
-    /*@Test
-    Vet ikke om skal være survey eller string
+
+    @Test
     void shouldReturnSurveyNameFromServer() throws IOException, SQLException {
-        //need to change the options to what we want them to be
-        SurveyDao surveyDao = new SurveyDao(TestData.testDataSource());
-        surveyDao.save("ost");
-        surveyDao.save("Test2");
+        Survey survey = exampleSurvey();
+        surveyDao.save(survey);
         server.addController("/api/categoryOptions", new SurveyOptionsController(surveyDao));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/categoryOptions");
         assertEquals(
-                "<option value=1>ost</option><option value=2>Test2</option>",
+                "<option value=1>Are you smarter than a 5th grader?</option>",
                 client.getMessageBody()
         );
-    }*/
+    }
+
+
+    //Test objects
+    private Survey exampleSurvey() {
+        Survey survey = new Survey();
+        survey.setSurveyName("Are you smarter than a 5th grader?");
+        return survey;
+    }
 
 }

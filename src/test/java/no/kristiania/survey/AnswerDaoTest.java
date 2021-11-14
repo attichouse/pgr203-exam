@@ -3,6 +3,7 @@ package no.kristiania.survey;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,8 +13,9 @@ public class AnswerDaoTest {
     private QuestionDao questionDao = new QuestionDao(TestData.testDataSource());
     private AnswerDao answerDao = new AnswerDao(TestData.testDataSource());
 
+
     @Test
-    void shouldRetrieveSavedAnswers() throws SQLException {
+    void shouldRetrieveSavedAnswer() throws SQLException {
         Survey survey = exampleSurvey();
         surveyDao.save(survey);
 
@@ -28,13 +30,41 @@ public class AnswerDaoTest {
                 .isEqualTo(answer);
     }
 
+
+    @Test
+    void shouldListAllSavedAnswers() throws SQLException {
+        Survey survey = exampleSurvey();
+        surveyDao.save(survey);
+
+        Question question = exampleQuestion();
+        questionDao.save(question);
+
+        Answer answer = exampleAnswer();
+        answerDao.save(answer);
+        Answer answer2 = exampleAnswer();
+        answerDao.save(answer2);
+
+        assertThat(answerDao.listAll())
+                .extracting(Answer::getAnswerId)
+                .contains(answer.getAnswerId(), answer2.getAnswerId());
+    }
+
+
+
+
     //Example objects
     private Answer exampleAnswer() {
         Answer answer = new Answer();
         answer.setAnswerId(1);
-        answer.setAnswerText("Nei");
+        answer.setAnswerText(exampleAnswerText());
         answer.setQuestionId(1);
         return answer;
+    }
+
+    public static String exampleAnswerText() {
+        String[] answerTexts = {"Nei", "Blue", "Pink", "Football"};
+        Random ran = new Random();
+        return answerTexts[ran.nextInt(answerTexts.length)];
     }
 
     private Question exampleQuestion() {
