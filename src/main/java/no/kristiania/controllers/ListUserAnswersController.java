@@ -7,12 +7,11 @@ import no.kristiania.survey.AnswerDao;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class ListUserAnswersController implements HttpController{
     private final AnswerDao answerDao;
     private final Answer answer = new Answer();
-    long questionId = answer.getQuestionId();
 
     public ListUserAnswersController(AnswerDao answerDao) {
         this.answerDao = answerDao;
@@ -20,13 +19,17 @@ public class ListUserAnswersController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
-        HttpMessage response = new HttpMessage(getBody());
+        HttpMessage response = new HttpMessage(getBody(request));
         response.write(socket);
     }
 
-    private String getBody() throws SQLException {
-        return answerDao.listAll()
-                .stream().map(m -> "<option value=" + m.getAnswerId() + ">" + m.getAnswerText() + "</option>")
-                .collect(Collectors.joining());
+    private String getBody(HttpMessage request) throws SQLException {
+        String responseText = "";
+        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
+        Long qid = Long.parseLong(queryMap.get("questionid"));
+        for (Answer answer : answerDao.listByQuestion(qid)) {
+            responseText += answer;
+        }
+        return responseText;
     }
 }

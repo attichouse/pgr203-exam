@@ -81,11 +81,9 @@ public class QuestionDao {
             )) {
                 statement.setLong(1, questionId);
                 try (ResultSet rs = statement.executeQuery()) {
-                    if (rs.next()) {
-                        return readFromResultSet(rs);
-                    } else {
-                        return null;
-                    }
+                    rs.next();
+
+                    return readFromResultSet(rs);
                 }
             }
         }
