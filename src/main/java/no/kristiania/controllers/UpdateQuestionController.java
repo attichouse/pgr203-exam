@@ -37,7 +37,7 @@ public class UpdateQuestionController implements HttpController {
         question.setQuestionIdFk(Long.parseLong(queryMap.get("survey")));
         question.setQuestionId(Long.parseLong(queryMap.get("questionid")));
         questionDao.update(question);
-        logger.info("Updated" + question.getQuestionDescription() + " in the database");
+        logger.info("Updated " + question.getQuestionDescription() + " in the database");
 
         HttpMessage redirect = new HttpMessage();
         redirect.setStartLine("HTTP/1.1 302 Redirect");

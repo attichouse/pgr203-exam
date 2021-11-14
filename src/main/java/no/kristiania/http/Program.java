@@ -30,7 +30,7 @@ public class Program {
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));
         httpServer.addController("/api/newAnswer", new UserAnswersController(answerDao));
         httpServer.addController("/api/questionOptions", new QuestionOptionsController(questionDao));
-        httpServer.addController("/api/listQuestions", new QuestionListController(questionDao));
+        httpServer.addController("/api/listQuestions", new ListQuestionsController(questionDao));
         httpServer.addController("/api/listAnswers", new ListUserAnswersController(answerDao));
         httpServer.addController("/api/updateQuestion", new UpdateQuestionController(questionDao));
 

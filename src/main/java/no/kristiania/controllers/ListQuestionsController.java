@@ -9,10 +9,10 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class QuestionListController implements HttpController{
+public class ListQuestionsController implements HttpController{
     private final QuestionDao questionDao;
 
-    public QuestionListController(QuestionDao questionDao) {
+    public ListQuestionsController(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
 
