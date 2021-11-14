@@ -24,9 +24,6 @@ public class Survey {
 
     @Override
     public String toString() {
-        return "Survey{" +
-                "surveyId=" + surveyId +
-                ", surveyName='" + surveyName + '\'' +
-                '}';
+        return "<option value=" + surveyId + ">" + surveyName + "</option>";
     }
 }
