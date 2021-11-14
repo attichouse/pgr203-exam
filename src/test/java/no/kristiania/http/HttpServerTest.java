@@ -6,6 +6,7 @@ import no.kristiania.survey.SurveyDao;
 import no.kristiania.survey.TestData;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,6 +56,28 @@ public class HttpServerTest {
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.html");
         assertEquals("text/html; charset=UTF-8", client.getHeader("Content-Type"));
+    }
+
+
+    @Test
+    void shouldAffirmContentTypeHTML() throws IOException {
+        File contentRoot = new File("target/test-classes");
+
+        Files.writeString(new File(contentRoot, "index.html").toPath(), "<h2>Hello World</h2>");
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/index.html");
+        assertEquals("text/html; charset=UTF-8", client.getHeader("Content-Type"));
+    }
+
+
+    @Test
+    void shouldAffirmContentTypeCSS() throws IOException {
+        File contentRoot = new File("target/test-classes");
+
+        Files.writeString(new File(contentRoot, "style.css").toPath(), "body { margin: 0 }");
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/style.css");
+        assertEquals("text/css", client.getHeader("Content-Type"));
     }
 
 
