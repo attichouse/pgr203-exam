@@ -10,28 +10,43 @@ import java.util.Map;
 public class HttpMessage {
 
     public String startLine;
-    public final Map<String, String> headerFields = new HashMap<>();
+    public final Map<String, String> headerFields;
     public String messageBody;
 
-
+    //Constructors
     public HttpMessage(Socket socket) throws IOException {
-        startLine = HttpMessage.readLine(socket);
-        readHeaders(socket);
-        if (headerFields.containsKey("Content-Length")) {
-            messageBody = HttpMessage.readBytes(socket, getContentLength());
+        startLine = readLine(socket);
+        headerFields = readHeaders(socket);
+
+        String contentLength = headerFields.get("Content-Length");
+        if (contentLength != null) {
+            messageBody = readBytes(socket, Integer.parseInt(contentLength));
+        } else {
+            messageBody = null;
         }
     }
 
 
-    public HttpMessage (String startLine, String messageBody) {
-        this.startLine = startLine;
+    public HttpMessage (String messageBody) {
+        startLine = "HTTP/1.1 200 OK";
+        headerFields = new HashMap<>();
+        headerFields.put("Content-Length", String.valueOf(messageBody.getBytes().length));
+        headerFields.put("Connection", "close");
         this.messageBody = messageBody;
 
     }
 
 
+    public HttpMessage() {
+        headerFields = new HashMap<>();
+        this.messageBody = null;
+    }
+
+
+    //Methods
     public static Map<String, String> parseRequestParameters(String query) {
         Map<String, String> queryMap = new HashMap<>();
+
         for (String queryParameter : query.split("&")) {
             int equalPos = queryParameter.indexOf('=');
             String parameterName = queryParameter.substring(0, equalPos);
@@ -49,16 +64,6 @@ public class HttpMessage {
     }
 
 
-    private int getContentLength() {
-        return Integer.parseInt(getHeader("Content-Length"));
-    }
-
-
-    private String getHeader(String headerName) {
-        return headerFields.get(headerName);
-    }
-
-
     static String readBytes(Socket socket, int contentLength) throws IOException {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < contentLength; i++) {
@@ -68,7 +73,8 @@ public class HttpMessage {
     }
 
 
-    private void readHeaders(Socket socket) throws IOException {
+    static Map<String, String> readHeaders(Socket socket) throws IOException {
+        Map <String, String> headerFields = new HashMap<>();
         String headerLine;
         while (!(headerLine = HttpMessage.readLine(socket)).isBlank()) {
             int colonPos = headerLine.indexOf(':');
@@ -76,6 +82,7 @@ public class HttpMessage {
             String headerValue = headerLine.substring(colonPos + 1).trim();
             headerFields.put(headerField, headerValue);
         }
+        return headerFields;
     }
 
 
@@ -93,12 +100,35 @@ public class HttpMessage {
 
 
     public void write(Socket clientSocket) throws IOException {
-        String response = startLine + "\r\n" +
-                //getBytes i stedet for length
-                "Content-Length: " + messageBody.length() + "\r\n" +
-                "Connection: close\r\n" +
-                "\r\n" +
-                messageBody;
-        clientSocket.getOutputStream().write(response.getBytes());
+        clientSocket.getOutputStream().write((startLine + "\r\n").getBytes());
+        for (String headerName : headerFields.keySet()) {
+            clientSocket.getOutputStream().write((headerName + ": " + headerFields.get(headerName) + "\r\n").getBytes());
+        }
+        clientSocket.getOutputStream().write(("\r\n").getBytes());
+        if (messageBody != null) {
+            clientSocket.getOutputStream().write(messageBody.getBytes());
+        }
+
+    }
+
+
+    //Getters and setters
+    public String getContentLength() {
+        return messageBody;
+    }
+
+
+    public Map<String, String> getHeader(){
+        return headerFields;
+    }
+
+
+    public void setStartLine(String startLine) {
+        this.startLine = startLine;
+    }
+
+
+    public String getStartLine() {
+        return startLine;
     }
 }

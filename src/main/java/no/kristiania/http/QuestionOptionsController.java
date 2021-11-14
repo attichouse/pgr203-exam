@@ -2,13 +2,14 @@ package no.kristiania.http;
 
 import no.kristiania.survey.Question;
 import no.kristiania.survey.QuestionDao;
-import no.kristiania.survey.Survey;
-import no.kristiania.survey.SurveyDao;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 
 public class QuestionOptionsController implements HttpController{
+
     private final QuestionDao questionDao;
 
     public QuestionOptionsController(QuestionDao questionDao){
@@ -17,13 +18,18 @@ public class QuestionOptionsController implements HttpController{
 
 
     @Override
-    public HttpMessage handle(HttpMessage request) throws SQLException {
+    public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(socket);
+    }
+
+    private String getBody() throws SQLException {
         String responseText = "";
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
         Long sid = Long.parseLong(queryMap.get("surveyid"));
         for (Question question : questionDao.listSurvey(sid)) {
             responseText += question;
         }
-        return new HttpMessage("HTTP/1.1 200 OK", responseText);
+        return responseText;
     }
 }

@@ -3,6 +3,8 @@ package no.kristiania.http;
 import no.kristiania.survey.Survey;
 import no.kristiania.survey.SurveyDao;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 
 public class SurveyOptionsController implements HttpController{
@@ -14,13 +16,20 @@ public class SurveyOptionsController implements HttpController{
     }
 
     @Override
-    public HttpMessage handle(HttpMessage request) throws SQLException {
-        String responseText = "";
+    public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(socket);
+    }
 
+    private String getBody() throws SQLException {
+        String responseText = "";
         int value = 1;
         for (Survey survey : surveyDao.listAll()) {
-            responseText += "<option value=" + (value++) + ">" + survey + "</option>";
+            responseText += "<option value=" + survey.getSurveyId() + ">" + survey.getSurveyName() + "</option>";
         }
-        return new HttpMessage("HTTP/1.1 200 OK", responseText);
+
+        return responseText;
     }
+
+
 }
