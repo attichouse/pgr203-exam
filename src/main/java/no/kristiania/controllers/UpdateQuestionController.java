@@ -4,10 +4,13 @@ import no.kristiania.http.HttpMessage;
 import no.kristiania.survey.Question;
 import no.kristiania.survey.QuestionDao;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class UpdateQuestionController implements HttpController{
+public class UpdateQuestionController implements HttpController {
+
         private final QuestionDao questionDao;
 
         public UpdateQuestionController(QuestionDao questionDao){
@@ -15,7 +18,12 @@ public class UpdateQuestionController implements HttpController{
         }
 
         @Override
-        public HttpMessage handle(HttpMessage request) throws SQLException {
+        public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
+            HttpMessage response = handle(request);
+            response.write(socket);
+        }
+
+        private HttpMessage handle(HttpMessage request) throws SQLException {
             Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
             Question question = new Question();
             question.setQuestionDescription(queryMap.get("question"));
@@ -24,7 +32,10 @@ public class UpdateQuestionController implements HttpController{
             question.setQuestionId(Long.parseLong(queryMap.get("questionid")));
             questionDao.update(question);
 
-            return new HttpMessage("HTTP/1.1 200 ok", "It is done");
+            HttpMessage redirect = new HttpMessage();
+            redirect.setStartLine("HTTP/1.1 302 Redirect");
+            redirect.getHeader().put("Location", "/changeQuestion.html");
+            return  redirect;
         }
     }
 

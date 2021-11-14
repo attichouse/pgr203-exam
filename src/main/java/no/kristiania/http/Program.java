@@ -5,28 +5,31 @@ import no.kristiania.survey.AnswerDao;
 import no.kristiania.survey.QuestionDao;
 import no.kristiania.survey.SurveyDao;
 import org.postgresql.ds.PGSimpleDataSource;
-
 import javax.sql.DataSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
 public class Program {
+
     public static void main(String[] args) throws IOException {
         DataSource dataSource = createDataSource();
         SurveyDao surveyDao = new SurveyDao(dataSource);
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
         HttpServer httpServer = new HttpServer(1962);
-        httpServer.addController("/", new RedirectController("index.html"));
         httpServer.addController("/api/newSurvey", new CreateSurveyController(surveyDao));
         httpServer.addController("/api/newQuestion", new CreateQuestionController(questionDao));
         httpServer.addController("/api/surveyOptions", new SurveyOptionsController(surveyDao));
         httpServer.addController("/api/newAnswer", new UserAnswersController(answerDao));
         httpServer.addController("/api/questionOptions", new QuestionOptionsController(questionDao));
+        httpServer.addController("/api/listQuestions", new QuestionListController(questionDao));
+        httpServer.addController("/api/listAnswers", new ListUserAnswersController(answerDao));
+        httpServer.addController("/api/updateQuestion", new UpdateQuestionController(questionDao));
 
         System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
     }
+
 
     private static DataSource createDataSource() throws IOException {
         Properties properties = new Properties();

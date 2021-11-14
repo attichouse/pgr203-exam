@@ -3,7 +3,6 @@ package no.kristiania.controllers;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.survey.Answer;
 import no.kristiania.survey.AnswerDao;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -36,5 +35,4 @@ public class UserAnswersController implements HttpController {
         redirect.getHeader().put("Location", "/listQuestions.html");
         return redirect;
     }
-
 }
