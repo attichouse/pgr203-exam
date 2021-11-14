@@ -1,12 +1,12 @@
 package no.kristiania.controllers;
 
 import no.kristiania.http.HttpMessage;
-import no.kristiania.survey.Question;
 import no.kristiania.survey.QuestionDao;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class QuestionListController implements HttpController{
     private final QuestionDao questionDao;
@@ -17,23 +17,15 @@ public class QuestionListController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
-        HttpMessage response = handle(request);
+        HttpMessage response = new HttpMessage(getBody());
         response.write(socket);
     }
 
-    private HttpMessage handle(HttpMessage request) throws SQLException {
-        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
+    private String getBody() throws SQLException {
+        return questionDao.listAll()
+                .stream().map(m -> "<option value=" + m.getQuestionId() + ">" + m.getQuestionDescription() + "</option>")
+                .collect(Collectors.joining());
 
-        String responseText = "";
-        Long sid = Long.parseLong(queryMap.get("surveyid"));
-        for (Question question : questionDao.listSurvey(sid)) {
-            responseText += question.toListString();
-        }
-
-        HttpMessage redirect = new HttpMessage();
-        redirect.setStartLine("HTTP/1.1 302 Redirect");
-        redirect.getHeader().put("Location", "/listQuestions.html");
-        return  redirect;
     }
 }
 

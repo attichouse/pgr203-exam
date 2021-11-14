@@ -16,22 +16,19 @@ public class ListUserAnswersController implements HttpController{
         this.answerDao = answerDao;
     }
 
+    @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
-        HttpMessage response = handle(request);
+        HttpMessage response = new HttpMessage(getBody(request));
         response.write(socket);
     }
 
-    private HttpMessage handle(HttpMessage request) throws SQLException {
+    private String getBody(HttpMessage request) throws SQLException {
         String responseText = "";
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
         Long qid = Long.parseLong(queryMap.get("questionid"));
         for (Answer answer : answerDao.listSurvey(qid)) {
             responseText += answer;
         }
-
-        HttpMessage redirect = new HttpMessage();
-        redirect.setStartLine("HTTP/1.1 302 Redirect");
-        redirect.getHeader().put("Location", "/listQuestions.html");
-        return  redirect;
+        return responseText;
     }
 }

@@ -6,8 +6,9 @@ import no.kristiania.survey.QuestionDao;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class UpdateQuestionController implements HttpController {
 
@@ -24,18 +25,31 @@ public class UpdateQuestionController implements HttpController {
         }
 
         private HttpMessage handle(HttpMessage request) throws SQLException {
-            Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
-            Question question = new Question();
-            question.setQuestionDescription(queryMap.get("question"));
-            question.setQuestionAlternatives(queryMap.get("questionAlternatives"));
-            question.setQuestionIdFk(Long.parseLong(queryMap.get("survey")));
-            question.setQuestionId(Long.parseLong(queryMap.get("questionid")));
+            HttpMessage requestParameter = new HttpMessage(request.getContentLength());
+
+            //Get data
+            String questionDescription = requestParameter.getParameter("question");
+            String questionAlternatives = requestParameter.getParameter("questionAlternatives");
+            long questionId = Integer.parseInt(requestParameter.getParameter("questionid"));
+            long questionIdFk = Integer.parseInt(requestParameter.getParameter("survey"));
+
+            //So we can read æøå
+            String decodeQuestionDescription = URLDecoder.decode(questionDescription, StandardCharsets.UTF_8);
+            String decodeQuestionAlternatives = URLDecoder.decode(questionAlternatives, StandardCharsets.UTF_8);
+
+            //Insert data
+            Question question = questionDao.retrieve(questionId);
+            question.setQuestionDescription(decodeQuestionDescription);
+            question.setQuestionAlternatives(decodeQuestionAlternatives);
+            question.setQuestionId(questionId);
+            question.setQuestionIdFk(questionIdFk);
+
             questionDao.update(question);
 
             HttpMessage redirect = new HttpMessage();
             redirect.setStartLine("HTTP/1.1 302 Redirect");
             redirect.getHeader().put("Location", "/changeQuestion.html");
-            return  redirect;
+            return redirect;
         }
     }
 

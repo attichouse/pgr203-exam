@@ -7,6 +7,7 @@ import no.kristiania.survey.QuestionDao;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class QuestionOptionsController implements HttpController{
 
@@ -19,16 +20,16 @@ public class QuestionOptionsController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
-        HttpMessage response = new HttpMessage(getBody());
+        HttpMessage response = new HttpMessage(getBody(request));
         response.write(socket);
     }
 
-    private String getBody() throws SQLException {
+    private String getBody(HttpMessage request) throws SQLException {
         String responseText = "";
-
-        int value = 1;
-        for (Question question : questionDao.listAll()) {
-            responseText += "<option value=" + question.getQuestionId() + ">" + question.getQuestionDescription() + "</option>";
+        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
+        Long sid = Long.parseLong(queryMap.get("surveyid"));
+        for (Question question : questionDao.listSurvey(sid)) {
+            responseText += question;
         }
         return responseText;
     }

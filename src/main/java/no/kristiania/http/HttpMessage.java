@@ -5,12 +5,14 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HttpMessage {
 
     public String startLine;
     public final Map<String, String> headerFields;
+    private final Map<String, String> parameters = new LinkedHashMap<>();
     public String messageBody;
 
     //Constructors
@@ -54,6 +56,10 @@ public class HttpMessage {
             queryMap.put(parameterName, URLDecoder.decode(parameterValue, StandardCharsets.UTF_8));
         }
         return queryMap;
+    }
+
+    public String getParameter(String key) {
+        return parameters.get(key);
     }
 
     public String parameterLine() {

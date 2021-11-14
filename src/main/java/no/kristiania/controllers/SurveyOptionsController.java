@@ -3,7 +3,6 @@ package no.kristiania.controllers;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.survey.Survey;
 import no.kristiania.survey.SurveyDao;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -31,6 +30,5 @@ public class SurveyOptionsController implements HttpController{
 
         return responseText;
     }
-
 
 }

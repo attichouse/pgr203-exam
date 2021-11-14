@@ -20,7 +20,6 @@ public class UserAnswersController implements HttpController {
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
         HttpMessage response = handle(request);
         response.write(socket);
-
     }
 
     private HttpMessage handle(HttpMessage request) throws SQLException {
