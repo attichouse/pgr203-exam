@@ -32,6 +32,5 @@ public class HttpClientTest {
         HttpClient client = new HttpClient("httpbin.org", 80, "/html");
         assertTrue(client.getMessageBody().startsWith("<!DOCTYPE html>"),
                 "Expected HTML: " + client.getMessageBody());
-
     }
 }

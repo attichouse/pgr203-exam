@@ -1,8 +1,10 @@
 package no.kristiania.survey;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
+
 import java.sql.SQLException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswerDaoTest {
 
@@ -12,22 +14,40 @@ public class AnswerDaoTest {
 
     @Test
     void shouldRetrieveSavedAnswers() throws SQLException {
-        Survey exampleSurvey = new Survey();
-        exampleSurvey.setSurveyName("Wut");
-        surveyDao.save(exampleSurvey);
+        Survey survey = exampleSurvey();
+        surveyDao.save(survey);
 
-        Question exampleQuestion = new Question();
-        exampleQuestion.setQuestionDescription("What is your favourite colour?");
-        exampleQuestion.setQuestionIdFk(1);
-        questionDao.save(exampleQuestion);
+        Question question = exampleQuestion();
+        questionDao.save(question);
 
-        Answer exampleAnswer = new Answer();
-        exampleAnswer.setQuestionId(1);
-        exampleAnswer.setAnswerText("Pink");
-        answerDao.save(exampleAnswer);
+        Answer answer = exampleAnswer();
+        answerDao.save(answer);
 
-        assertThat(answerDao.retrieve(exampleAnswer.getAnswerId()))
+        assertThat(answerDao.retrieve(answer.getAnswerId()))
                 .usingRecursiveComparison()
-                .isEqualTo(exampleAnswer);
+                .isEqualTo(answer);
+    }
+
+    //Example objects
+    private Answer exampleAnswer() {
+        Answer answer = new Answer();
+        answer.setAnswerId(1);
+        answer.setAnswerText("Nei");
+        answer.setQuestionId(1);
+        return answer;
+    }
+
+    private Question exampleQuestion() {
+        Question question = new Question();
+        question.setQuestionDescription("Is the sky blue?");
+        question.setQuestionAlternatives("Nei; Ja");
+        question.setQuestionIdFk(1);
+        return question;
+    }
+
+    private Survey exampleSurvey() {
+        Survey survey = new Survey();
+        survey.setSurveyName("Er du klar?");
+        return survey;
     }
 }
