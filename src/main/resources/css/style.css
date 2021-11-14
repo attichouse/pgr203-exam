@@ -1,0 +1,41 @@
+body {
+    background-color: #2F4550;
+    display:grid;
+    place-items: center;
+    height: 100vh;
+}
+
+main {
+    width: 40%;
+    padding: 1em;
+    background-color: white;
+    max-width: 60em;
+    margin: auto;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+.buttons-div {
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+#main-index {
+    padding: 1em 1em 3em 1em;
+}
+
+a:link, a:visited {
+    background-color: #76a5af;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    margin: 5px;
+}

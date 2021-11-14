@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="/images/Icojam-Matreshka-Red-matreshka-inside-icon.ico"/>
+        <meta charset="UTF-8">
+        <title>Print answers</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <main>
+            <h1>Print answers</h1>
+            <p><label>Choose survey: <select name="survey" id="survey" onchange="fillQuestion()"></select></label></p>
+            <p><label>Choose question: <select name="question" id="question" onchange="fillList()"></select></label></p>
+            <p><label id="userAnswers">List user answers:</label></p>
+            <a href="index.html">Back</a>
+        </main>
+
+    <script>
+        function fillQuestion() {
+            var sid = document.getElementById("survey").value;
+            fetch("/api/listQuestions?surveyid="+sid).then(function (res) {
+                return res.text()
+            }).then(function (text) {
+                document.getElementById("question").innerHTML = text;
+                document.getElementById("question").selectedIndex=-1;
+            })
+        }
+        function fillList() {
+            var qid = document.getElementById("question").value;
+            fetch("/api/listAnswers?questionid="+qid).then(function (res) {
+                return res.text()
+            }).then(function (text) {
+                document.getElementById("userAnswers").innerHTML = text;
+            })
+        }
+        fetch("/api/surveyOptions").then(function (res) {
+            return res.text()
+        }).then(function (text) {
+            document.getElementById("survey").innerHTML = text;
+            document.getElementById("survey").selectedIndex=-1;
+        })
+
+    </script>
+
+    </body>
+</html>

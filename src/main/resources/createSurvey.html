@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="/images/Icojam-Matreshka-Red-matreshka-inside-icon.ico"/>
+        <meta charset="UTF-8">
+        <title>Create a new survey</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <main>
+            <h1>Create a new survey</h1>
+
+            <form action="/api/newSurvey" method="post">
+                <p><label>Name for survey: <input type="text" name="surveyName"></label><button>Submit</button></p>
+            </form>
+
+            <br>
+            <form action="/api/newQuestion" method="post">
+                <p><label>Choose survey: <select name="survey" id="surveys"></select></label></p>
+                <p><label>Question: <input type="text" name="question"/></label></p>
+                <p><label>Answer options (separate with semicolon): <input type="text" name="questionAlternatives"/></label></p>
+                <p><button>Submit</button></p>
+            </form>
+
+            <a href="index.html">Back</a>
+        </main>
+    </body>
+    <script>
+        fetch("/api/surveyOptions").then(function(res) {
+            return res.text()
+        }).then(function(text) {
+            document.getElementById("surveys").innerHTML = text;
+        });
+    </script>
+</html>

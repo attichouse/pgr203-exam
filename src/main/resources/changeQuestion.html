@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/Icojam-Matreshka-Red-matreshka-inside-icon.ico"/>
+    <meta charset="UTF-8">
+    <title>Change question</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+    <h1>Change question</h1>
+    <form action="/api/updateQuestion" method="post">
+        <p><label>Choose survey: <select name="survey" id="survey" onchange="fillQuestion()"></select></label></p>
+        <p><label>Choose question: <select name="questionid" id="questionid"></select></label></p>
+        <p><label>New question: <input type="text" name="question"/></label></p>
+        <p><label>New answer options (separate with semicolon): <input type="text" name="questionAlternatives" /></label></p><p><button>Submit</button></p>
+    </form>
+    <a href="index.html">Back</a>
+</main>
+
+<script>
+    function fillQuestion() {
+        var sid = document.getElementById("survey").value;
+        fetch("/api/listQuestions?surveyid="+sid).then(function (res) {
+            return res.text()
+        }).then(function (text) {
+            document.getElementById("questionid").innerHTML = text;
+            document.getElementById("questionid").selectedIndex=-1;
+        })
+    }
+    fetch("/api/surveyOptions").then(function (res) {
+        return res.text()
+    }).then(function (text) {
+        document.getElementById("survey").innerHTML = text;
+        document.getElementById("survey").selectedIndex=-1;
+    })
+
+</script>
+
+</body>
+</html>
