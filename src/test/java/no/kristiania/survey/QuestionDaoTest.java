@@ -24,6 +24,7 @@ public class QuestionDaoTest {
                 .isEqualTo(question);
     }
 
+
     @Test
     void shouldUpdateQuestions() throws SQLException {
         Survey survey = exampleSurvey();
@@ -39,6 +40,23 @@ public class QuestionDaoTest {
                 .extracting(Question::getQuestionDescription)
                 .isEqualTo(question2.getQuestionDescription());
     }
+
+
+    @Test
+    void shouldListAllSavedQuestions() throws SQLException {
+        Survey survey = exampleSurvey();
+        surveyDao.save(survey);
+
+        Question question = exampleQuestion();
+        Question question2 = exampleQuestion2();
+        questionDao.save(question);
+        questionDao.save(question2);
+
+        assertThat(questionDao.listAll())
+                .extracting(Question::getQuestionId)
+                .contains(question.getQuestionId(), question2.getQuestionId());
+    }
+
 
     @Test
     void shouldRetrieveQuestionsOnSurvey() throws SQLException {

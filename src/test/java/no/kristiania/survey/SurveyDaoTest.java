@@ -31,6 +31,8 @@ public class SurveyDaoTest {
     }
 
 
+
+    //Test objects
     private Survey exampleSurvey() {
         Survey survey = new Survey();
         survey.setSurveyName("Are you smarter than a 5th grader?");
