@@ -1,6 +1,8 @@
 package no.kristiania.http;
 
 import no.kristiania.controllers.HttpController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,7 +16,7 @@ public class HttpServer {
 
     private ServerSocket serverSocket;
     private HashMap<String, HttpController> controllers = new HashMap<>();
-
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public HttpServer(int serverPort) throws IOException {
         serverSocket = new ServerSocket(serverPort);
@@ -96,7 +98,7 @@ public class HttpServer {
             clientSocket.getOutputStream().write(response.getBytes());
             clientSocket.getOutputStream().write(buffer.toByteArray());
         } catch (NullPointerException err) {
-
+            logger.info("NullPointerException caught");
         }
     }
 
@@ -105,8 +107,8 @@ public class HttpServer {
         return serverSocket.getLocalPort();
     }
 
+
     public void addController(String path, HttpController controller) {
         this.controllers.put(path, controller);
     }
-
 }
