@@ -1,6 +1,5 @@
 package no.kristiania.http;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,22 +22,22 @@ public class HttpServer {
 
     //MÅ HA BEDRE FEILHÅNDTERING HER
     private void handleClients() {
-        try {
-            while (true) {
-                handleClient();
+        while (true) {
+            try {
+                Socket clientSocket = serverSocket.accept();
+                handleClient(clientSocket);
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
             }
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
         }
     }
 
 
-    private void handleClient() throws IOException, SQLException {
-        Socket clientSocket = serverSocket.accept();
-
-        HttpMessage httpMessage = new HttpMessage(clientSocket);
-        String[] requestLine = httpMessage.startLine.split(" ");
+    private void handleClient(Socket clientSocket) throws IOException, SQLException {
+        HttpMessage request = new HttpMessage(clientSocket);
+        String[] requestLine = request.getStartLine().split(" ");
         String requestTarget = requestLine[1];
+        String requestMethod = requestLine[0];
 
         int questionPos = requestTarget.indexOf('?');
         String fileTarget;
@@ -50,17 +49,38 @@ public class HttpServer {
             fileTarget = requestTarget;
         }
 
-        if(controllers.containsKey(fileTarget)){
-            HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
-            response.write(clientSocket);
-            return;
+        if (requestMethod.equals("POST")) {
+            getController(fileTarget).handle(request, clientSocket);
+        } else {
+            if (fileTarget.equals("/echo")) {
+                //something
+            } else {
+                HttpController controller = controllers.get(fileTarget);
+                if (controller != null) {
+                    controller.handle(request, clientSocket);
+                } else {
+                    writeResponse(clientSocket, fileTarget);
+                }
+            }
         }
+    }
 
-        InputStream fileResource = getClass().getResourceAsStream(fileTarget);
-        if (fileResource != null) {
+
+    private HttpController getController(String requestPath) {
+        return controllers.get(requestPath);
+    }
+
+    private void writeResponse(Socket clientSocket, String requestTarget) throws IOException {
+        try (InputStream fileResource = getClass().getResourceAsStream(requestTarget)) {
+            if (fileResource == null) {
+               String body = requestTarget + " file not found";
+               HttpMessage response = new HttpMessage(body);
+               response.setStartLine("HTTP/1.1 404 Not found");
+               response.write(clientSocket);
+
+            }
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             fileResource.transferTo(buffer);
-            String responseText = buffer.toString();
 
             String contentType = "text/plain";
             if (requestTarget.endsWith(".html")) {
@@ -68,30 +88,19 @@ public class HttpServer {
             } else if (requestTarget.endsWith("css")) {
                 contentType = "text/css";
             }
-            writeOkResponse(clientSocket, responseText, contentType);
-            return;
+
+
+            String response = "HTTP/1.1 200 OK\r\n" +
+                    //getBytes i stedet for length
+                    "Content-Length: " + buffer.toByteArray().length + "\r\n" +
+                    "Content-Type: " + contentType + "\r\n" +
+                    "Connection: close\r\n" +
+                    "\r\n";
+            clientSocket.getOutputStream().write(response.getBytes());
+            clientSocket.getOutputStream().write(buffer.toByteArray());
+        } catch (NullPointerException err) {
+
         }
-
-        String responseText = "File not found: " + requestTarget;
-
-        String response = "HTTP/1.1 404 Not found\r\n" +
-                "Content-Length: " + responseText.length() + "\r\n" +
-                "Connection: close \r\n" +
-                "\r\n" +
-                responseText;
-        clientSocket.getOutputStream().write(response.getBytes());
-    }
-
-
-    private void writeOkResponse(Socket clientSocket, String responseText, String contentType) throws IOException {
-        String response = "HTTP/1.1 200 OK\r\n" +
-                //getBytes i stedet for length
-                "Content-Length: " + responseText.length() + "\r\n" +
-                "Content-Type: " + contentType + "\r\n" +
-                "Connection: close\r\n" +
-                "\r\n" +
-                responseText;
-        clientSocket.getOutputStream().write(response.getBytes());
     }
 
 

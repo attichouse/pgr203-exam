@@ -6,6 +6,8 @@ import java.net.Socket;
 public class HttpClient {
 
     private final int statusCode;
+    //private final Map<String, String> responseHeader;
+    //private final String responseContentLength;
     private HttpMessage httpMessage;
 
 
@@ -22,6 +24,24 @@ public class HttpClient {
         String[] statusLine = httpMessage.startLine.split(" ");
         this.statusCode = Integer.parseInt(statusLine[1]);
     }
+
+    /*public HttpClient(String host, int port, String requestTarget, String httpMethod) throws IOException {
+        Socket socket = new Socket(host, port);
+
+        String request = httpMethod + " " + requestTarget + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n";
+        socket.getOutputStream().write(request.getBytes());
+
+        HttpMessage response = new HttpMessage(socket);
+        String startLine = response.getStartLine();
+        responseHeader = response.getHeader();
+        responseContentLength = response.getContentLength();
+
+        String[] statusLine = startLine.split(" ");
+        statusCode = Integer.parseInt(statusLine[1]);
+    }*/
 
 
     public int getStatusCode() {
