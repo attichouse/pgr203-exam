@@ -55,10 +55,24 @@ public class AnswerDao {
         return answer;
     }
 
-    public ArrayList<Answer> listSurvey(long questionid) throws SQLException {
+    public ArrayList<Answer> listAll() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from user_answer")) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<Answer> result = new ArrayList<>();
+                    while (rs.next()) {
+                        result.add(readFromResultSet(rs));
+                    }
+                    return result;
+                }
+            }
+        }
+    }
+
+    public ArrayList<Answer> listByQuestion(long questionId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from user_answer where question_id = ?")) {
-                statement.setLong(1, questionid);
+                statement.setLong(1, questionId);
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<Answer> result = new ArrayList<>();
                     while (rs.next()) {

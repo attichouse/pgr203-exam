@@ -23,7 +23,7 @@ public class QuestionListController implements HttpController{
 
     private String getBody() throws SQLException {
         return questionDao.listAll()
-                .stream().map(m -> "<option value=" + m.getQuestionId() + ">" + m.getQuestionDescription() + "</option>")
+                .stream().map(m -> "<option value=" + m.getQuestionIdFk() + ">" + m.getQuestionDescription() + "</option>")
                 .collect(Collectors.joining());
 
     }

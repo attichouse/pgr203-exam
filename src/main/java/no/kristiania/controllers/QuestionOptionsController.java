@@ -28,7 +28,7 @@ public class QuestionOptionsController implements HttpController{
         String responseText = "";
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
         Long sid = Long.parseLong(queryMap.get("surveyid"));
-        for (Question question : questionDao.listSurvey(sid)) {
+        for (Question question : questionDao.listBySurvey(sid)) {
             responseText += question;
         }
         return responseText;

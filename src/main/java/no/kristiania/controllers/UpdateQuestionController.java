@@ -28,21 +28,22 @@ public class UpdateQuestionController implements HttpController {
             HttpMessage requestParameter = new HttpMessage(request.getContentLength());
 
             //Get data
-            String questionDescription = requestParameter.getParameter("question");
-            String questionAlternatives = requestParameter.getParameter("questionAlternatives");
-            long questionId = Integer.parseInt(requestParameter.getParameter("questionid"));
-            long questionIdFk = Integer.parseInt(requestParameter.getParameter("survey"));
+            String questionDescription = requestParameter.getParameter("description");
+            String questionAlternatives = requestParameter.getParameter("question_alternatives");
+            long questionId = Integer.parseInt(requestParameter.getParameter("question_id"));
+            long questionIdFk = Integer.parseInt(requestParameter.getParameter("survey_id"));
 
             //So we can read æøå
             String decodeQuestionDescription = URLDecoder.decode(questionDescription, StandardCharsets.UTF_8);
             String decodeQuestionAlternatives = URLDecoder.decode(questionAlternatives, StandardCharsets.UTF_8);
 
             //Insert data
-            Question question = questionDao.retrieve(questionId);
+            Question question = questionDao.retrieve(questionIdFk);
             question.setQuestionDescription(decodeQuestionDescription);
             question.setQuestionAlternatives(decodeQuestionAlternatives);
             question.setQuestionId(questionId);
             question.setQuestionIdFk(questionIdFk);
+
 
             questionDao.update(question);
 

@@ -1,13 +1,12 @@
 package no.kristiania.controllers;
 
 import no.kristiania.http.HttpMessage;
-import no.kristiania.survey.Answer;
 import no.kristiania.survey.AnswerDao;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ListUserAnswersController implements HttpController{
     private final AnswerDao answerDao;
@@ -18,17 +17,13 @@ public class ListUserAnswersController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
-        HttpMessage response = new HttpMessage(getBody(request));
+        HttpMessage response = new HttpMessage(getBody());
         response.write(socket);
     }
 
-    private String getBody(HttpMessage request) throws SQLException {
-        String responseText = "";
-        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
-        Long qid = Long.parseLong(queryMap.get("questionid"));
-        for (Answer answer : answerDao.listSurvey(qid)) {
-            responseText += answer;
-        }
-        return responseText;
+    private String getBody() throws SQLException {
+        return answerDao.listAll()
+                .stream().map(m -> "<option value=" + m.getQuestion_id() + ">" + m.getAnswer_text() + "</option>")
+                .collect(Collectors.joining());
     }
 }

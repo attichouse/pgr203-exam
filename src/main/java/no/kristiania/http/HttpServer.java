@@ -75,7 +75,7 @@ public class HttpServer {
     private void writeResponse(Socket clientSocket, String requestTarget) throws IOException {
         try (InputStream fileResource = getClass().getResourceAsStream(requestTarget)) {
             if (fileResource == null) {
-               String body = requestTarget + " file not found";
+               String body = "File not found: " + requestTarget;
                HttpMessage response = new HttpMessage(body);
                response.setStartLine("HTTP/1.1 404 Not found");
                response.write(clientSocket);
