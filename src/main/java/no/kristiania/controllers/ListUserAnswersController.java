@@ -9,9 +9,9 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class ListUserAnswersController implements HttpController{
+public class ListUserAnswersController implements HttpController {
+
     private final AnswerDao answerDao;
-    private final Answer answer = new Answer();
 
     public ListUserAnswersController(AnswerDao answerDao) {
         this.answerDao = answerDao;
@@ -28,7 +28,7 @@ public class ListUserAnswersController implements HttpController{
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.parameterLine());
         Long qid = Long.parseLong(queryMap.get("questionid"));
         for (Answer answer : answerDao.listByQuestion(qid)) {
-            responseText += answer;
+            responseText += answer.toString();
         }
         return responseText;
     }

@@ -9,7 +9,8 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class ListQuestionsController implements HttpController{
+public class ListQuestionsController implements HttpController {
+
     private final QuestionDao questionDao;
 
     public ListQuestionsController(QuestionDao questionDao) {
@@ -29,7 +30,6 @@ public class ListQuestionsController implements HttpController{
         for (Question question : questionDao.listBySurvey(sid)) {
             responseText += question.toListString();
         }
-
         return responseText;
     }
 }
