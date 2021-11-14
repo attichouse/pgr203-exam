@@ -1,6 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.controllers.RedirectController;
+import no.kristiania.controllers.*;
 import no.kristiania.survey.AnswerDao;
 import no.kristiania.survey.QuestionDao;
 import no.kristiania.survey.SurveyDao;
@@ -25,7 +25,6 @@ public class Program {
         httpServer.addController("/api/newAnswer", new UserAnswersController(answerDao));
         httpServer.addController("/api/questionOptions", new QuestionOptionsController(questionDao));
 
-        /*httpServer.setCategories(List.of("Mat", "Drikke", "Frukt"));*/
         System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
     }
 
