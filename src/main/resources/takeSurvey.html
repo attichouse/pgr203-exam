@@ -44,7 +44,7 @@
                     "&alternativ="+ myArray[i].getElementsByTagName("label")[1].getElementsByTagName("select")[0].value;
 
 
-                    fetch("/api/newAnswer?"+ p,
+                    fetch("/api/newAnswer",
                 {
                     method: "POST",
                         headers:
