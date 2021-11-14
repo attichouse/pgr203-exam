@@ -32,6 +32,26 @@ public class QuestionDao {
         }
     }
 
+    public void update(Question question) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "update questions set description = ?, survey_id = ?, question_alternatives = ? where question_id = ?",
+                    Statement.RETURN_GENERATED_KEYS
+            )) {
+                statement.setString(1, question.getQuestionDescription());
+                statement.setLong(2, question.getQuestionIdFk());
+                statement.setString(3, question.getQuestionAlternatives());
+                statement.setLong(4, question.getQuestionId());
+                statement.executeUpdate();
+
+                try (ResultSet rs = statement.getGeneratedKeys()) {
+                    rs.next();
+                    question.setQuestionId(rs.getLong("question_id"));
+                }
+            }
+        }
+    }
+
 
     public Question retrieve(long questionId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
@@ -62,6 +82,20 @@ public class QuestionDao {
     public ArrayList<Question> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from questions")) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<Question> result = new ArrayList<>();
+                    while (rs.next()) {
+                        result.add(readFromResultSet(rs));
+                    }
+                    return result;
+                }
+            }
+        }
+    }
+    public ArrayList<Question> listSurvey(long surveyid) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from questions where survey_id = ?")) {
+                statement.setLong(1, surveyid);
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<Question> result = new ArrayList<>();
                     while (rs.next()) {

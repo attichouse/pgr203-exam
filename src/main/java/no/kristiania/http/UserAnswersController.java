@@ -27,7 +27,7 @@ public class UserAnswersController implements HttpController {
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Answer answer = new Answer();
         answer.setAnswer_text(queryMap.get("alternativ"));
-        answer.setQuestion_id(Long.parseLong(queryMap.get("questionid")));
+        answer.setQuestion_id(Long.parseLong(queryMap.get("questionId")));
         answerDao.save(answer);
 
         HttpMessage redirect = new HttpMessage();
