@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class ListUserAnswersController implements HttpController{
     private final AnswerDao answerDao;
     private final Answer answer = new Answer();
+    long questionId = answer.getQuestionId();
 
     public ListUserAnswersController(AnswerDao answerDao) {
         this.answerDao = answerDao;

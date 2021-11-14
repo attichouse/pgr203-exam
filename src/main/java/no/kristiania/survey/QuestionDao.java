@@ -53,7 +53,7 @@ public class QuestionDao {
     }
 
 
-    public void update(Question question, long id) throws SQLException {
+    public void update2(Question question, long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "update questions set description = ?, survey_id = ?, question_alternatives = ? where question_id = ?",
@@ -77,14 +77,15 @@ public class QuestionDao {
     public Question retrieve(long questionId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions"
-                    /*"select * from questions where question_id = ?"*/
+                    "select * from questions where question_id = ?"
             )) {
-                /*statement.setLong(1, questionId);*/
-
+                statement.setLong(1, questionId);
                 try (ResultSet rs = statement.executeQuery()) {
-                    rs.next();
-                    return readFromResultSet(rs);
+                    if (rs.next()) {
+                        return readFromResultSet(rs);
+                    } else {
+                        return null;
+                    }
                 }
             }
         }
