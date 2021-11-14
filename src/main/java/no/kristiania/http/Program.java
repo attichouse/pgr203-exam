@@ -5,6 +5,8 @@ import no.kristiania.survey.AnswerDao;
 import no.kristiania.survey.QuestionDao;
 import no.kristiania.survey.SurveyDao;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,12 +14,16 @@ import java.util.Properties;
 
 public class Program {
 
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+
     public static void main(String[] args) throws IOException {
+        HttpServer httpServer = new HttpServer(8080);
+
         DataSource dataSource = createDataSource();
         SurveyDao surveyDao = new SurveyDao(dataSource);
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
-        HttpServer httpServer = new HttpServer(1962);
+
         httpServer.addController("/", new RedirectController("index.html"));
         httpServer.addController("/api/newSurvey", new CreateSurveyController(surveyDao));
         httpServer.addController("/api/newQuestion", new CreateQuestionController(questionDao));
@@ -28,7 +34,7 @@ public class Program {
         httpServer.addController("/api/listAnswers", new ListUserAnswersController(answerDao));
         httpServer.addController("/api/updateQuestion", new UpdateQuestionController(questionDao));
 
-        System.out.println("http://localhost:" + httpServer.getPort() + "/index.html");
+        logger.info("Started http://localhost:{}/index.html", httpServer.getPort());
     }
 
 

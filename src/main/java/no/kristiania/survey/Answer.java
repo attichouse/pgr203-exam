@@ -1,36 +1,36 @@
 package no.kristiania.survey;
 
 public class Answer {
-    private long answer_id;
-    private String answer_text;
-    private long question_id;
+    private long answerId;
+    private String answerText;
+    private long questionId;
 
     public long getQuestionId() {
-        return question_id;
+        return questionId;
     }
 
-    public void setQuestionId(long question_id) {
-        this.question_id = question_id;
+    public void setQuestionId(long questionId) {
+        this.questionId = questionId;
     }
 
     public long getAnswerId() {
-        return answer_id;
+        return answerId;
     }
 
-    public void setAnswerId(long answer_id) {
-        this.answer_id = answer_id;
+    public void setAnswerId(long answerId) {
+        this.answerId = answerId;
     }
 
     public String getAnswerText() {
-        return answer_text;
+        return answerText;
     }
 
-    public void setAnswerText(String answer_text) {
-        this.answer_text = answer_text;
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     @Override
     public String toString() {
-        return "<p>" + answer_text + "</p>";
+        return "<p>" + answerText + "</p>";
     }
 }

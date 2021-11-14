@@ -22,7 +22,6 @@ public class HttpServer {
     }
 
 
-    //MÅ HA BEDRE FEILHÅNDTERING HER
     private void handleClients() {
         while (true) {
             try {
@@ -54,15 +53,11 @@ public class HttpServer {
         if (requestMethod.equals("POST")) {
             getController(fileTarget).handle(request, clientSocket);
         } else {
-            if (fileTarget.equals("/echo")) {
-                //something
+            HttpController controller = controllers.get(fileTarget);
+            if (controller != null) {
+                controller.handle(request, clientSocket);
             } else {
-                HttpController controller = controllers.get(fileTarget);
-                if (controller != null) {
-                    controller.handle(request, clientSocket);
-                } else {
-                    writeResponse(clientSocket, fileTarget);
-                }
+                writeResponse(clientSocket, fileTarget);
             }
         }
     }
@@ -71,6 +66,7 @@ public class HttpServer {
     private HttpController getController(String requestPath) {
         return controllers.get(requestPath);
     }
+
 
     private void writeResponse(Socket clientSocket, String requestTarget) throws IOException {
         try (InputStream fileResource = getClass().getResourceAsStream(requestTarget)) {
@@ -93,7 +89,6 @@ public class HttpServer {
 
 
             String response = "HTTP/1.1 200 OK\r\n" +
-                    //getBytes i stedet for length
                     "Content-Length: " + buffer.toByteArray().length + "\r\n" +
                     "Content-Type: " + contentType + "\r\n" +
                     "Connection: close\r\n" +

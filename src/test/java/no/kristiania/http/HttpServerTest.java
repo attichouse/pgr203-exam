@@ -1,13 +1,10 @@
 package no.kristiania.http;
 
-
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.time.LocalTime;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -66,16 +63,4 @@ public class HttpServerTest {
         );
     }*/
 
-   /* @Test
-    void shouldCreateNewProduct () throws IOException{
-        HttpPostClient postClient = new HttpPostClient(
-                "localhost",
-                server.getPort(),
-                "/api/newProduct",
-                "productName=Banan"
-        );
-        assertEquals(200, postClient.getStatusCode());
-        Product product = server.getProducts().get(0);
-        assertEquals("Banan", product.getProductName());
-    }*/
 }

@@ -33,7 +33,7 @@ public class SurveyDaoTest {
 
     private Survey exampleSurvey() {
         Survey survey = new Survey();
-        survey.setSurveyName(TestData.pickOne("Er du smartere enn en 5. klassing?", "How much do you know about cars?"));
+        survey.setSurveyName("Are you smarter than a 5th grader?");
         return survey;
     }
 }
