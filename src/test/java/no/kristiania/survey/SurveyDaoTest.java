@@ -1,7 +1,10 @@
 package no.kristiania.survey;
 
+import no.kristiania.http.TestData;
 import org.junit.jupiter.api.Test;
+
 import java.sql.SQLException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SurveyDaoTest {
