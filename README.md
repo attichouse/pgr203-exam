@@ -19,6 +19,8 @@ På den siste knappen som heter «Print answers» kan du først velge en survey,
 Vi skulle gjerne hatt med feilhåndtering på at hvis noen av input-feltene var tomme så skulle man fått beskjed om at de må fylles ut. Det hadde vi gjort med en if statement hvis vi hadde hatt tid. 
 Vi har en del duplisert kode som vi dessverre ikke fikk tid til å gjøre noe med.
 
+Vi begynte å sette opp personDao og person-database for å bruke cookies til å hente informasjon om personen som svare på spørsmålene, men det rakk vi ikke.
+
 Diagram som viser datamodellen
 <img width="923" alt="Skjermbilde 2021-11-14 kl  21 54 21" src="https://user-images.githubusercontent.com/74190719/141704891-c4a846eb-9dfd-4249-b403-b94eb1575256.png">
 
