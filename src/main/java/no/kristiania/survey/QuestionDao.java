@@ -99,6 +99,7 @@ public class QuestionDao {
         return question;
     }
 
+
     public ArrayList<Question> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from questions")) {
@@ -112,6 +113,8 @@ public class QuestionDao {
             }
         }
     }
+
+
     public ArrayList<Question> listBySurvey(long surveyId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from questions where survey_id = ?")) {

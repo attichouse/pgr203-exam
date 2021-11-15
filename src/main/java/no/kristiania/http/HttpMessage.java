@@ -58,9 +58,6 @@ public class HttpMessage {
         return queryMap;
     }
 
-    public String getParameter(String key) {
-        return parameters.get(key);
-    }
 
     public String parameterLine() {
         String s = startLine.substring(startLine.indexOf("?")+1);
@@ -101,7 +98,7 @@ public class HttpMessage {
 
         int expectedNewLine = socket.getInputStream().read();
         assert expectedNewLine == '\n';
-        return result.toString();
+        return URLDecoder.decode(result.toString(), StandardCharsets.UTF_8);
     }
 
 

@@ -65,11 +65,6 @@ public class HttpServer {
     }
 
 
-    private HttpController getController(String requestPath) {
-        return controllers.get(requestPath);
-    }
-
-
     private void writeResponse(Socket clientSocket, String requestTarget) throws IOException {
         try (InputStream fileResource = getClass().getResourceAsStream(requestTarget)) {
             if (fileResource == null) {
@@ -110,5 +105,10 @@ public class HttpServer {
 
     public void addController(String path, HttpController controller) {
         this.controllers.put(path, controller);
+    }
+
+
+    private HttpController getController(String requestPath) {
+        return controllers.get(requestPath);
     }
 }
