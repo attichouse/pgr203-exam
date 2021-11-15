@@ -45,8 +45,13 @@ public class PersonDao {
         }
     }
 
-    private Person readFromResultSet(ResultSet rs) {
+
+    private Person readFromResultSet(ResultSet rs) throws SQLException {
         Person person = new Person();
-        person.setPersonId(rs);
+        person.setPersonId(rs.getLong("person_id"));
+        person.setFirstName(rs.getString("first_name"));
+        person.setLastName(rs.getString("last_name"));
+        person.setEmail(rs.getString("email"));
+        return person;
     }
 }
