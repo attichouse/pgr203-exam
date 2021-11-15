@@ -16,6 +16,8 @@ Den tredje knappen på siden heter «Change questions» og her kan du endre på 
 
 På den siste knappen som heter «Print answers» kan du først velge en survey, deretter velge spørsmål og skrive ut alle svarene som har kommet inn på hvert spørsmål.
 
+Vi skulle gjerne hatt med feilhåndtering på at hvis noen av input-feltene var tomme så skulle man fått beskjed om at de må fylles ut. Det hadde vi gjort med en if statement hvis vi hadde hatt tid. 
+
 ## Korreksjoner av eksamensteksten i Wiseflow:
 
 **DET ER EN FEIL I EKSEMPELKODEN I WISEFLOW:**
