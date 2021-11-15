@@ -24,6 +24,7 @@ public class SavePersonController implements HttpController{
     @Override
     public void handle(HttpMessage request, Socket socket) throws SQLException, IOException {
         HttpMessage response = handle(request);
+        //response.getHeader().put("Set-Cookie", "");
         response.write(socket);
     }
 
