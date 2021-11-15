@@ -7,8 +7,8 @@ import no.kristiania.survey.SurveyDao;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -16,10 +16,12 @@ public class Program {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
+
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(8080);
 
-        DataSource dataSource = createDataSource();
+        Program program = new Program();
+        DataSource dataSource = program.createDataSource();
         SurveyDao surveyDao = new SurveyDao(dataSource);
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
@@ -38,11 +40,9 @@ public class Program {
     }
 
 
-    private static DataSource createDataSource() throws IOException {
+    private DataSource createDataSource() throws IOException {
         Properties properties = new Properties();
-        try (FileReader reader = new FileReader("pgr203.properties")) {
-            properties.load(reader);
-        }
+        properties.load(getClass().getResourceAsStream("/pgr203.properties"));
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setURL(properties.getProperty( "dataSource.url",

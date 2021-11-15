@@ -14,8 +14,7 @@ public class AnswerDao {
 
 
     public void save(Answer answer) throws SQLException {
-        try (Connection connection = dataSource.getConnection())
-        {
+        try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "insert into user_answer (answer_text, question_id) values (?, ?)",
                     Statement.RETURN_GENERATED_KEYS

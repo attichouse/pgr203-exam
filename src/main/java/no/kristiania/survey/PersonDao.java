@@ -29,4 +29,29 @@ public class PersonDao {
             }
         }
     }
+
+
+    public Person retrieve(long personId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select * from person where person_id = ?"
+            )) {
+                statement.setLong(1, personId);
+                try (ResultSet rs = statement.executeQuery()) {
+                    rs.next();
+                    return readFromResultSet(rs);
+                }
+            }
+        }
+    }
+
+
+    private Person readFromResultSet(ResultSet rs) throws SQLException {
+        Person person = new Person();
+        person.setPersonId(rs.getLong("person_id"));
+        person.setFirstName(rs.getString("first_name"));
+        person.setLastName(rs.getString("last_name"));
+        person.setEmail(rs.getString("email"));
+        return person;
+    }
 }

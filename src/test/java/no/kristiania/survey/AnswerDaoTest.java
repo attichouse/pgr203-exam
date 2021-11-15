@@ -1,5 +1,7 @@
 package no.kristiania.survey;
 
+import no.kristiania.http.TestData;
+import no.kristiania.survey.*;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
