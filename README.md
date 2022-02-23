@@ -1,5 +1,6 @@
 # PGR203 Avansert Java eksamen
 
+[![Java CI with Maven](https://github.com/attichouse/pgr203-exam/actions/workflows/maven.yml/badge.svg)](https://github.com/attichouse/pgr203-exam/actions/workflows/maven.yml)
 
 ## Korreksjoner av eksamensteksten i Wiseflow:
 
