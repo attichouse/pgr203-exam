@@ -4,6 +4,7 @@ import no.kristiania.controllers.*;
 import no.kristiania.survey.AnswerDao;
 import no.kristiania.survey.QuestionDao;
 import no.kristiania.survey.SurveyDao;
+import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class Program {
 
 
     public static void main(String[] args) throws IOException {
-        HttpServer httpServer = new HttpServer(8080);
+        HttpServer httpServer = new HttpServer(3000);
 
         Program program = new Program();
         DataSource dataSource = program.createDataSource();
@@ -50,7 +51,7 @@ public class Program {
         ));
         dataSource.setUser(properties.getProperty("dataSource.user", "postgres"));
         dataSource.setPassword(properties.getProperty("dataSource.password"));
-        /*Flyway.configure().dataSource(dataSource).load().migrate();*/
+        Flyway.configure().dataSource(dataSource).load().migrate();
         return dataSource;
     }
 }

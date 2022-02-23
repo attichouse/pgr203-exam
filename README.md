@@ -1,29 +1,5 @@
 # PGR203 Avansert Java eksamen
 
-[![Java CI with Maven](https://github.com/kristiania-pgr203-2021/pgr203-exam-attichouse/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-attichouse/actions/workflows/maven.yml)
-
-
-
-## Beskriv hvordan programmet skal testes:
-
-Eksamen har gått ut på å opprette spørreundersøkelser. Vårt prosjekt sin funksjonalitet går ut på at man kan opprette ulike spørreundersøkelser, ta spørreundersøkelsene, endre spørsmålene og liste ut svarene på de ulike spørsmålene. 
-
-Du kjører programmet fra metoden main i klassen Program og trykker deg inn på http://localhost:8080/index.html. Der starter du med å trykke på den øverste knappen som heter «Create a new Survey». Der velger du hva spørreundersøkelsen din skal hete og trykker «Submit». Så legger du inn et eller flere spørsmål som du ønsker å ha med i undersøkelsen og legger til svaralternativer som du skal skille med semikolon. Til slutt trykker du på den nederste «Submit» knappen.
-
-Etter du har gjort dette kan du trykke på «back» for å komme tilbake til startsiden. Her kan du videre velge «Take Survey». Der velger du hvilken spørreundersøkelse du ønsker og ta og så kommer alternativene som er lagt inn opp. Du velger det du ønsker å svare på de ulike spørsmålene og trykker på «Submit». 
-
-Den tredje knappen på siden heter «Change questions» og her kan du endre på de spørsmålene som er lagt inn. Først velger du hvilken survey og så hvilket spørsmål du ønsker å endre før du trykker på «Submit».
-
-På den siste knappen som heter «Print answers» kan du først velge en survey, deretter velge spørsmål og skrive ut alle svarene som har kommet inn på hvert spørsmål.
-
-Vi skulle gjerne hatt med feilhåndtering på at hvis noen av input-feltene var tomme så skulle man fått beskjed om at de må fylles ut. Det hadde vi gjort med en if statement hvis vi hadde hatt tid. 
-Vi har en del duplisert kode som vi dessverre ikke fikk tid til å gjøre noe med.
-
-Vi begynte å sette opp personDao og person-database for å bruke cookies til å hente informasjon om personen som svare på spørsmålene, men det rakk vi ikke.
-
-Diagram som viser datamodellen
-<img width="923" alt="Skjermbilde 2021-11-14 kl  21 54 21" src="https://user-images.githubusercontent.com/74190719/141704891-c4a846eb-9dfd-4249-b403-b94eb1575256.png">
-
 
 ## Korreksjoner av eksamensteksten i Wiseflow:
 
@@ -52,8 +28,8 @@ Diagram som viser datamodellen
 
 ### Koden
 
-* [ ] `mvn package` bygger en executable jar-fil
-* [ ] Koden inneholder et godt sett med tester
+* [ ] `mvn package` builds an executable jar-file
+* [ ] The code has a good amount of tests
 * [ ] `java -jar target/...jar` (etter `mvn package`) lar bruker legge til og liste ut data fra databasen via webgrensesnitt
 * [ ] Serveren leser HTML-filer fra JAR-filen slik at den ikke er avhengig av å kjøre i samme directory som kildekoden
 * [ ] Programmet leser `dataSource.url`, `dataSource.username` og `dataSource.password` fra `pgr203.properties` for å connecte til databasen

@@ -78,7 +78,7 @@ public class HttpServerTest {
     }
 
 
-    /* Funker når vi kjører testene, men maven is a bish
+    /*Works when we run the tests, but not with maven
     @Test
     void shouldReturnSurveyNameFromServer() throws IOException, SQLException {
         Survey survey = exampleSurvey();
